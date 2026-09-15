@@ -231,9 +231,9 @@ export default function TradeInPage() {
   }
 
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
+    <div className="mobile-page-shell">
       {/* 1. HERO SECTION: Cinematic Editorial with Mixed Typography */}
-      <section className="bg-card border-b border-border/60 py-8 sm:py-24 text-foreground relative overflow-hidden mb-6 sm:mb-12 shadow-sm">
+      <section className="bg-card border-b border-border/60 py-7 sm:py-24 text-foreground relative overflow-hidden mb-5 sm:mb-12 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-black/5 dark:bg-black/40 rounded-full blur-[140px] pointer-events-none" />
@@ -246,7 +246,7 @@ export default function TradeInPage() {
             </span>
           </div>
 
-          <h1 className="font-display text-xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] sm:leading-[1.05] text-foreground max-w-4xl mx-auto">
+          <h1 className="mobile-hero-title max-w-4xl mx-auto">
             Kalkulator Selisih <br className="hidden sm:block" />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary to-foreground/80">
               TUKAR TAMBAH INSTAN,
@@ -275,15 +275,15 @@ export default function TradeInPage() {
       </section>
 
       {/* OUTER WORKSPACE WRAPPER (Aligned with Navbar max-w-[1536px] px-6 sm:px-10 lg:px-16) */}
-      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16 space-y-5 sm:space-y-12">
+      <div className="mobile-container space-y-5 sm:space-y-12">
         {/* Contextual Visual Card Above Form */}
-        <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card overflow-hidden shadow-lg grid grid-cols-12 items-center">
-          <div className="col-span-7 p-3 sm:p-10 space-y-1.5 sm:space-y-3">
+        <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-12 items-center">
+          <div className="md:col-span-7 p-4 sm:p-10 space-y-2 sm:space-y-3">
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-primary">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Nilai Appraisal Kompetitif</span>
             </div>
-            <h3 className="font-display text-xl sm:text-2xl lg:text-3xl font-black text-foreground leading-snug">
+            <h3 className="font-display text-lg sm:text-2xl lg:text-3xl font-black text-foreground leading-snug">
               Upgrade Mobil Tanpa Khawatir Terdepresiasi Berlebihan
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -298,7 +298,7 @@ export default function TradeInPage() {
               </span>
             </div>
           </div>
-          <div className="col-span-5 h-32 sm:h-56 md:h-full relative overflow-hidden">
+          <div className="md:col-span-5 h-44 sm:h-56 md:h-full relative overflow-hidden">
             <img 
               src="/services/trade-in.jpg" 
               alt="DENKEN Smart Trade-In Suite" 
@@ -312,9 +312,9 @@ export default function TradeInPage() {
         </div>
 
         {/* MAIN WORKSPACE GRID: Form on Left (8 cols) + Sticky Live Valuation Card on Right (4 cols) */}
-        <div className="grid grid-cols-12 gap-2.5 sm:gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 items-start">
           {/* LEFT: Stepper & Form */}
-          <div className="col-span-7 sm:col-span-8 space-y-4 sm:space-y-6">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-6">
             {/* Stepper Progress Bar */}
             <div className="flex items-center justify-between mb-4 relative">
               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-border -z-10" />
@@ -388,16 +388,16 @@ export default function TradeInPage() {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
                 <div>
-                  <label className="font-bold text-muted-foreground block mb-1">Model & Varian Mobil</label>
+                  <label className="font-bold text-muted-foreground block mb-1">Model & Varian</label>
                   <input
                     type="text"
                     required
                     value={myCarModel}
                     onChange={(e) => setMyCarModel(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none focus:border-primary"
-                    placeholder="Contoh: Innova Reborn 2.4 V Diesel"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none focus:border-primary min-h-[40px]"
+                    placeholder="Innova Reborn 2.4 V"
                   />
                 </div>
                 <div>
@@ -405,7 +405,7 @@ export default function TradeInPage() {
                   <select
                     value={myCarYear}
                     onChange={(e) => setMyCarYear(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none focus:border-primary"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none focus:border-primary min-h-[40px]"
                   >
                     {Array.from({ length: 15 }, (_, i) => 2026 - i).map((yr) => (
                       <option key={yr} value={yr}>
@@ -416,34 +416,34 @@ export default function TradeInPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-2.5 sm:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
                 <div>
                   <label className="font-bold text-muted-foreground block mb-1">Transmisi</label>
                   <select
                     value={myCarTransmission}
                     onChange={(e) => setMyCarTransmission(e.target.value as any)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none min-h-[40px]"
                   >
                     <option value="Automatic">Automatic (AT)</option>
                     <option value="Manual">Manual (MT)</option>
                   </select>
                 </div>
                 <div>
-                  <label className="font-bold text-muted-foreground block mb-1">Estimasi Kilometer (KM)</label>
+                  <label className="font-bold text-muted-foreground block mb-1">Estimasi KM</label>
                   <input
                     type="number"
                     value={myCarMileage}
                     onChange={(e) => setMyCarMileage(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none min-h-[40px]"
                     placeholder="50000"
                   />
                 </div>
-                <div>
+                <div className="col-span-2 sm:col-span-1">
                   <label className="font-bold text-muted-foreground block mb-1">Kondisi Fisik & Mesin</label>
                   <select
                     value={myCarCondition}
                     onChange={(e) => setMyCarCondition(e.target.value as any)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none min-h-[40px]"
                   >
                     <option value="Istimewa">Istimewa (Cat Orisinil, Bebas Cacat)</option>
                     <option value="Bagus">Bagus (Mulus, Rawatan Berkala)</option>
@@ -453,28 +453,28 @@ export default function TradeInPage() {
               </div>
 
               {/* Status Pajak & Plat (Indonesian Realities) */}
-              <div className="grid sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-muted/30 border border-border/50">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl bg-muted/30 border border-border/50">
                 <div>
-                  <label className="font-bold text-muted-foreground block mb-1">Status Pajak STNK</label>
+                  <label className="font-bold text-muted-foreground block mb-1">Pajak STNK</label>
                   <select
                     value={myCarTaxStatus}
                     onChange={(e) => setMyCarTaxStatus(e.target.value as any)}
-                    className="w-full rounded-xl border border-border bg-background p-2.5 font-bold outline-none"
+                    className="w-full rounded-xl border border-border bg-background p-2 sm:p-2.5 text-xs font-bold outline-none min-h-[40px]"
                   >
-                    <option value="Pajak Hidup">Pajak Hidup / Panjang (Nilai Maksimal)</option>
-                    <option value="Pajak Mati < 1 Tahun">Pajak Mati Kurang dari 1 Tahun</option>
-                    <option value="Pajak Mati > 1 Tahun">Pajak Mati Lebih dari 1 Tahun</option>
+                    <option value="Pajak Hidup">Pajak Hidup / Panjang</option>
+                    <option value="Pajak Mati < 1 Tahun">Pajak Mati &lt; 1 Tahun</option>
+                    <option value="Pajak Mati > 1 Tahun">Pajak Mati &gt; 1 Tahun</option>
                   </select>
                 </div>
                 <div>
-                  <label className="font-bold text-muted-foreground block mb-1">Plat Nomor Ganjil / Genap</label>
+                  <label className="font-bold text-muted-foreground block mb-1">Plat Nomor</label>
                   <select
                     value={myCarPlate}
                     onChange={(e) => setMyCarPlate(e.target.value as any)}
-                    className="w-full rounded-xl border border-border bg-background p-2.5 font-bold outline-none"
+                    className="w-full rounded-xl border border-border bg-background p-2 sm:p-2.5 text-xs font-bold outline-none min-h-[40px]"
                   >
-                    <option value="Ganjil">Plat Nomor Ganjil</option>
-                    <option value="Genap">Plat Nomor Genap</option>
+                    <option value="Ganjil">Plat Ganjil</option>
+                    <option value="Genap">Plat Genap</option>
                   </select>
                 </div>
               </div>
@@ -520,17 +520,17 @@ export default function TradeInPage() {
 
               {/* Showroom Target Car Selector Grid */}
               <div>
-                <label className="font-bold text-muted-foreground block mb-2.5">
+                <label className="font-bold text-muted-foreground block mb-2">
                   Pilih Mobil dari Stok DENKEN MOTORS:
                 </label>
-                <div className="grid sm:grid-cols-2 gap-3 max-h-72 overflow-y-auto pr-1">
+                <div className="grid grid-cols-2 gap-1.5 sm:gap-3 max-h-72 overflow-y-auto pr-1">
                   {availableShowroomCars.map((car) => {
                     const isSelected = selectedTargetCar?.id === car.id
                     return (
                       <div
                         key={car.id}
                         onClick={() => setTargetCarId(car.id)}
-                        className={`p-3 rounded-2xl border cursor-pointer flex items-center gap-3 transition ${
+                        className={`p-2 sm:p-3 rounded-xl sm:rounded-2xl border cursor-pointer flex items-center gap-2 sm:gap-3 transition ${
                           isSelected
                             ? 'border-primary bg-primary/10 shadow-sm'
                             : 'border-border bg-muted/20 hover:bg-muted/50'
@@ -539,14 +539,14 @@ export default function TradeInPage() {
                         <img
                           src={car.image}
                           alt={car.name}
-                          className="h-12 w-16 object-cover rounded-xl border border-border shrink-0"
+                          className="h-9 w-12 sm:h-12 sm:w-16 object-cover rounded-lg sm:rounded-xl border border-border shrink-0"
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="font-bold text-xs text-foreground truncate">{car.name}</p>
-                          <p className="text-[10px] text-muted-foreground">
+                          <p className="font-bold text-[11px] sm:text-xs text-foreground truncate">{car.name}</p>
+                          <p className="text-[9px] sm:text-[10px] text-muted-foreground truncate">
                             {car.year} • {car.plateNumber || 'Plat B'}
                           </p>
-                          <p className="font-mono font-black text-xs text-primary mt-0.5">
+                          <p className="font-mono font-black text-[10px] sm:text-xs text-primary mt-0.5">
                             {formatIDR(car.priceCredit || car.price)}
                           </p>
                         </div>
@@ -682,7 +682,7 @@ export default function TradeInPage() {
                 </p>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
                 <div>
                   <label className="font-bold text-muted-foreground block mb-1">Nama Lengkap</label>
                   <input
@@ -690,24 +690,24 @@ export default function TradeInPage() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none focus:border-primary"
-                    placeholder="Contoh: Hendra Wijaya"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none focus:border-primary min-h-[40px]"
+                    placeholder="Hendra Wijaya"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-muted-foreground block mb-1">Nomor WhatsApp Aktif</label>
+                  <label className="font-bold text-muted-foreground block mb-1">Nomor WhatsApp</label>
                   <input
                     type="tel"
                     required
                     value={whatsapp}
                     onChange={(e) => setWhatsapp(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none focus:border-primary"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none focus:border-primary min-h-[40px]"
                     placeholder="0812XXXXXXXX"
                   />
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
                 <div>
                   <label className="font-bold text-muted-foreground block mb-1">Domisili / Kota</label>
                   <input
@@ -715,19 +715,19 @@ export default function TradeInPage() {
                     required
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none focus:border-primary"
-                    placeholder="Contoh: Jakarta Selatan"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none focus:border-primary min-h-[40px]"
+                    placeholder="Jakarta Selatan"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-muted-foreground block mb-1">Pilih Tanggal Janji Temu</label>
+                  <label className="font-bold text-muted-foreground block mb-1">Tanggal Janji Temu</label>
                   <input
                     type="date"
                     required
                     value={inspectionDate}
                     min={new Date().toISOString().split('T')[0]}
                     onChange={(e) => setInspectionDate(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-muted/40 p-3 font-bold outline-none focus:border-primary"
+                    className="w-full rounded-xl border border-border bg-muted/40 p-2.5 sm:p-3 text-xs font-bold outline-none focus:border-primary min-h-[40px]"
                   />
                 </div>
               </div>
@@ -789,8 +789,8 @@ export default function TradeInPage() {
       </div>
 
       {/* RIGHT: STICKY LIVE VALUATION SIDEBAR */}
-      <div className="col-span-5 sm:col-span-4 sticky top-28 space-y-3 sm:space-y-6">
-        <div className="rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-3 sm:p-7 shadow-xl space-y-3 sm:space-y-6">
+      <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-3 sm:space-y-6">
+        <div className="rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-4 sm:p-7 shadow-xl space-y-3 sm:space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-border/50">
             <div>
               <span className="text-[10px] font-black uppercase tracking-[0.25em] text-primary block">
@@ -891,7 +891,7 @@ export default function TradeInPage() {
     </div>
 
     {/* 2. THREE-STEP TRADE-IN VISUAL PROTOCOL */}
-    <div className="space-y-12 pt-8">
+      <div className="space-y-6 sm:space-y-12 pt-4 sm:pt-8">
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2.5">
           <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
@@ -899,7 +899,7 @@ export default function TradeInPage() {
             Trade-In Protocol
           </span>
         </div>
-        <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tight text-foreground">
+        <h2 className="font-display text-2xl sm:text-4xl font-black tracking-tight text-foreground">
           Alur Tukar Tambah <span className="font-serif italic font-normal text-muted-foreground">Transparan & Terstruktur.</span>
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -907,7 +907,7 @@ export default function TradeInPage() {
         </p>
       </div>
 
-      <div className="grid sm:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-3 gap-3.5 sm:gap-6">
         <div className="rounded-[2.2rem] border border-border/60 bg-card overflow-hidden shadow-sm hover:border-primary/40 hover:shadow-lg transition-all flex flex-col justify-between group">
           <div className="h-44 overflow-hidden relative">
             <img 

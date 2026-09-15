@@ -148,9 +148,9 @@ function SimulationContent() {
   })
 
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
+    <div className="mobile-page-shell">
       {/* 1. HERO SECTION */}
-      <section className="bg-card border-b border-border/60 py-8 sm:py-24 text-foreground relative overflow-hidden mb-6 sm:mb-12 shadow-sm">
+      <section className="bg-card border-b border-border/60 py-7 sm:py-24 text-foreground relative overflow-hidden mb-5 sm:mb-12 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-black/5 dark:bg-black/40 rounded-full blur-[140px] pointer-events-none" />
@@ -163,7 +163,7 @@ function SimulationContent() {
             </span>
           </div>
 
-          <h1 className="font-display text-xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] sm:leading-[1.05] text-foreground max-w-4xl mx-auto">
+          <h1 className="mobile-hero-title max-w-4xl mx-auto">
             Skema Pembiayaan <br className="hidden sm:block" />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary to-foreground/80">
               TERKURASI & FLEKSIBEL,
@@ -192,15 +192,15 @@ function SimulationContent() {
       </section>
 
       {/* OUTER WORKSPACE WRAPPER (Standardized with Navbar max-w-[1536px] px-6 sm:px-10 lg:px-16) */}
-      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16 space-y-5 sm:space-y-12">
+      <div className="mobile-container space-y-5 sm:space-y-12">
         {/* Contextual Visual Card Above Car Selector */}
-        <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card overflow-hidden shadow-lg grid grid-cols-12 items-center">
-          <div className="col-span-7 p-3 sm:p-10 space-y-1.5 sm:space-y-3">
+        <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-12 items-center">
+          <div className="md:col-span-7 p-4 sm:p-10 space-y-2 sm:space-y-3">
             <div className="flex items-center gap-1.5 sm:gap-2 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.25em] text-primary">
               <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               <span>Fasilitas Kredit Eksekutif</span>
             </div>
-            <h3 className="font-display text-xs sm:text-2xl font-black text-foreground leading-snug">
+            <h3 className="font-display text-lg sm:text-2xl font-black text-foreground leading-snug">
               Solusi Finansial Fleksibel dengan Pendampingan Konsultan Privat
             </h3>
             <p className="text-[9px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
@@ -215,7 +215,7 @@ function SimulationContent() {
               </span>
             </div>
           </div>
-          <div className="col-span-5 h-32 sm:h-56 md:h-full relative overflow-hidden">
+          <div className="md:col-span-5 h-44 sm:h-56 md:h-full relative overflow-hidden">
             <img 
               src="/services/kredit-leasing.jpg" 
               alt="DENKEN Executive Financial Suite" 
@@ -244,25 +244,25 @@ function SimulationContent() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
             {mounted && displayCars.map((c) => {
               const isSelected = c.id === selectedCarId
               return (
                 <button
                   key={c.id}
                   onClick={() => handleCarSelect(c.id)}
-                  className={`group relative overflow-hidden rounded-2xl border p-2.5 text-left transition-all ${
+                  className={`group relative overflow-hidden rounded-xl sm:rounded-2xl border p-2 sm:p-2.5 text-left transition-all ${
                     isSelected
                       ? 'border-primary bg-primary/10 ring-2 ring-primary/50 shadow-md scale-[1.02]'
                       : 'border-border/60 bg-muted/40 hover:border-primary/40 hover:bg-muted'
                   }`}
                 >
-                  <div className="aspect-[16/10] overflow-hidden rounded-xl bg-muted mb-2">
+                  <div className="aspect-[16/10] overflow-hidden rounded-lg sm:rounded-xl bg-muted mb-1.5 sm:mb-2">
                     <img src={c.image} alt={c.name} className="h-full w-full object-cover object-center" />
                   </div>
-                  <p className="text-[10px] font-bold text-primary uppercase tracking-wider truncate">{c.brand}</p>
-                  <p className="font-display text-xs font-bold truncate text-foreground">{c.name}</p>
-                  <p className="text-[11px] font-extrabold text-foreground mt-0.5">{(c.price / 1000000).toFixed(0)} Jt</p>
+                  <p className="text-[9px] sm:text-[10px] font-bold text-primary uppercase tracking-wider truncate">{c.brand}</p>
+                  <p className="font-display text-[11px] sm:text-xs font-bold truncate text-foreground">{c.name}</p>
+                  <p className="text-[10px] sm:text-[11px] font-extrabold text-foreground mt-0.5">{(c.price / 1000000).toFixed(0)} Jt</p>
                 </button>
               )
             })}
@@ -270,18 +270,18 @@ function SimulationContent() {
         </div>
 
         {/* MAIN CALCULATOR GRID: Standard 8 cols (inputs) + 4 cols (summary card) */}
-        <div className="grid grid-cols-12 gap-2.5 sm:gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 items-start">
           
           {/* LEFT: INPUT CONTROLS (8 COLS) */}
-          <div className="col-span-7 sm:col-span-8 space-y-4 sm:space-y-8 rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-3 sm:p-10 shadow-xl">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-8 rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-4 sm:p-10 shadow-xl">
             
             {/* Selected Car Highlight */}
             {selectedCar && (
-              <div className="flex items-center gap-5 p-4 rounded-2xl bg-secondary/70 border border-border/50">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 p-3 sm:p-4 rounded-2xl bg-secondary/70 border border-border/50">
                 <img
                   src={selectedCar.image}
                   alt={selectedCar.name}
-                  className="h-20 w-32 object-cover object-center rounded-xl border border-border/50 shrink-0"
+                  className="h-36 w-full sm:h-20 sm:w-32 object-cover object-center rounded-xl border border-border/50 shrink-0"
                 />
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-primary flex items-center gap-2">
@@ -298,7 +298,7 @@ function SimulationContent() {
 
             {/* Input 1: Harga Kendaraan */}
             <div>
-              <div className="flex justify-between items-center mb-3">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-3">
                 <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <Layers className="h-4 w-4 text-primary" /> Harga Kendaraan (OTR)
                 </label>
@@ -308,7 +308,7 @@ function SimulationContent() {
                     type="text"
                     value={formatDots(price)}
                     readOnly
-                    className="w-48 rounded-xl border border-border/50 bg-muted/30 py-2 pl-9 pr-3 text-right font-display text-lg font-bold text-foreground outline-none cursor-not-allowed opacity-80"
+                    className="w-full sm:w-48 rounded-xl border border-border/50 bg-muted/30 py-2 pl-9 pr-3 text-right font-display text-lg font-bold text-foreground outline-none cursor-not-allowed opacity-80"
                   />
                 </div>
               </div>
@@ -316,7 +316,7 @@ function SimulationContent() {
 
             {/* Input 2: Uang Muka (DP) */}
             <div>
-              <div className="flex justify-between items-center mb-3">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-3">
                 <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <Percent className="h-4 w-4 text-primary" /> Uang Muka (DP) - {dpPercent}%
                 </label>
@@ -324,12 +324,12 @@ function SimulationContent() {
               </div>
 
               {/* Preset DP Buttons */}
-              <div className="grid grid-cols-5 gap-2 mb-4">
+              <div className="grid grid-cols-5 gap-1 sm:gap-2 mb-3 sm:mb-4">
                 {[10, 15, 20, 30, 50].map((p) => (
                   <button
                     key={p}
                     onClick={() => setDpPercent(p)}
-                    className={`py-2 rounded-xl text-xs font-bold transition-all border ${
+                    className={`py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold transition-all border ${
                       dpPercent === p
                         ? 'border-primary bg-primary/15 text-primary shadow-sm'
                         : 'border-border/60 bg-muted/40 text-muted-foreground hover:bg-muted'
@@ -353,34 +353,34 @@ function SimulationContent() {
 
             {/* Input 3: Tenor (Jangka Waktu) */}
             <div>
-              <div className="flex justify-between items-center mb-3">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-2 mb-2 sm:mb-3">
                 <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-primary" /> Jangka Waktu (Tenor)
                 </label>
-                <span className="font-display text-lg font-bold text-foreground">
-                  {tenor} Tahun <span className="text-xs font-normal text-muted-foreground">({tenor * 12} bulan)</span>
+                <span className="font-display text-sm sm:text-lg font-bold text-foreground">
+                  {tenor} Tahun <span className="text-[10px] sm:text-xs font-normal text-muted-foreground">({tenor * 12} bulan)</span>
                 </span>
               </div>
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+              <div className="grid grid-cols-5 gap-1 sm:gap-2">
                 {[1, 2, 3, 4, 5].map((t) => (
                   <button
                     key={t}
                     onClick={() => setTenor(t)}
-                    className={`py-3.5 rounded-xl font-bold transition-all border flex flex-col items-center justify-center ${
+                    className={`py-2 sm:py-3.5 rounded-xl font-bold transition-all border flex flex-col items-center justify-center ${
                       tenor === t
                         ? 'border-primary bg-primary text-primary-foreground shadow-md'
                         : 'border-border/60 bg-muted/40 text-muted-foreground hover:bg-muted'
                     }`}
                   >
-                    <span className="text-sm">{t} Thn</span>
-                    <span className="text-[10px] opacity-80">{(interestRates[t] * 100).toFixed(2)}%</span>
+                    <span className="text-xs sm:text-sm">{t} Thn</span>
+                    <span className="text-[9px] sm:text-[10px] opacity-80">{(interestRates[t] * 100).toFixed(2)}%</span>
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Input 4: Jenis Pembiayaan & Asuransi */}
-            <div className="grid sm:grid-cols-2 gap-6 pt-4 border-t border-border/50">
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-6 pt-3 sm:pt-4 border-t border-border/50">
               <div>
                 <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 block">
                   Skema Pembayaran (Skema Angsuran)
@@ -447,7 +447,7 @@ function SimulationContent() {
           </div>
 
           {/* RIGHT: LUXURIOUS SUMMARY CARD */}
-          <div className="col-span-5 sm:col-span-4 sticky top-28 space-y-3 sm:space-y-6">
+          <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-3 sm:space-y-6">
             <div className="rounded-2xl sm:rounded-3xl bg-zinc-950 text-white p-3 sm:p-7 border border-white/15 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 -mr-20 -mt-20 h-64 w-64 rounded-full bg-primary/30 blur-[100px]" />
               
@@ -469,7 +469,7 @@ function SimulationContent() {
                   </p>
                   <div className="flex items-baseline justify-center gap-1 sm:gap-1.5 whitespace-nowrap">
                     <span className="font-display text-[10px] sm:text-lg font-bold text-white/80 shrink-0">Rp</span>
-                    <span className="font-display text-sm sm:text-3xl xl:text-[2.25rem] font-black text-white tracking-tight tabular-nums">
+                    <span className="font-display text-2xl sm:text-3xl xl:text-[2.25rem] font-black text-white tracking-tight tabular-nums">
                       {Math.round(monthlyPayment).toLocaleString('id-ID')}
                     </span>
                     <span className="text-[8px] sm:text-xs font-semibold text-white/60 shrink-0">/bln</span>
@@ -632,63 +632,63 @@ function SimulationContent() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
-            <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/60 bg-card p-4 sm:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
-              <div className="space-y-2 sm:space-y-3">
-                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
+            <div className="rounded-xl sm:rounded-[2.2rem] border border-border/60 bg-card p-3 sm:p-5 lg:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
+              <div className="space-y-1.5 sm:space-y-3">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Building2 className="h-4 w-4 sm:h-6 sm:w-6" />
                 </div>
-                <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">BCA Finance</h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                <h3 className="font-display text-xs sm:text-base lg:text-lg font-bold text-foreground line-clamp-1">BCA Finance</h3>
+                <p className="text-[9px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
                   Paket suku bunga terendah mulai 2.6% p.a. fixed untuk unit baru maupun second luxury dengan tenor hingga 5 tahun.
                 </p>
               </div>
-              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border/40 text-[9px] sm:text-[11px] font-bold text-primary">
+              <div className="pt-2 sm:pt-4 mt-2 sm:mt-4 border-t border-border/40 text-[8px] sm:text-[11px] font-bold text-primary truncate">
                 Suku Bunga Khusus Prioritas
               </div>
             </div>
 
-            <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/60 bg-card p-4 sm:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
-              <div className="space-y-2 sm:space-y-3">
-                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
+            <div className="rounded-xl sm:rounded-[2.2rem] border border-border/60 bg-card p-3 sm:p-5 lg:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
+              <div className="space-y-1.5 sm:space-y-3">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Building2 className="h-4 w-4 sm:h-6 sm:w-6" />
                 </div>
-                <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">Mandiri Utama (MUF)</h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                <h3 className="font-display text-xs sm:text-base lg:text-lg font-bold text-foreground line-clamp-1">Mandiri Utama (MUF)</h3>
+                <p className="text-[9px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
                   Fasilitas uang muka (DP) fleksibel mulai 20% dan proses persetujuan verifikasi dokumen kilat 1x24 jam kerja.
                 </p>
               </div>
-              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border/40 text-[9px] sm:text-[11px] font-bold text-primary">
+              <div className="pt-2 sm:pt-4 mt-2 sm:mt-4 border-t border-border/40 text-[8px] sm:text-[11px] font-bold text-primary truncate">
                 Approval Kilat 24 Jam
               </div>
             </div>
 
-            <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/60 bg-card p-4 sm:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
-              <div className="space-y-2 sm:space-y-3">
-                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
+            <div className="rounded-xl sm:rounded-[2.2rem] border border-border/60 bg-card p-3 sm:p-5 lg:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
+              <div className="space-y-1.5 sm:space-y-3">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Building2 className="h-4 w-4 sm:h-6 sm:w-6" />
                 </div>
-                <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">Maybank Finance</h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                <h3 className="font-display text-xs sm:text-base lg:text-lg font-bold text-foreground line-clamp-1">Maybank Finance</h3>
+                <p className="text-[9px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
                   Plafon pembiayaan tinggi khusus kendaraan supercar & premium SUV dengan skema angsuran ADDM atau ADDB.
                 </p>
               </div>
-              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border/40 text-[9px] sm:text-[11px] font-bold text-primary">
+              <div className="pt-2 sm:pt-4 mt-2 sm:mt-4 border-t border-border/40 text-[8px] sm:text-[11px] font-bold text-primary truncate">
                 Plafon Supercar Eksklusif
               </div>
             </div>
 
-            <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/60 bg-card p-4 sm:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
-              <div className="space-y-2 sm:space-y-3">
-                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
+            <div className="rounded-xl sm:rounded-[2.2rem] border border-border/60 bg-card p-3 sm:p-5 lg:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
+              <div className="space-y-1.5 sm:space-y-3">
+                <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Building2 className="h-4 w-4 sm:h-6 sm:w-6" />
                 </div>
-                <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">CIMB Niaga Auto</h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                <h3 className="font-display text-xs sm:text-base lg:text-lg font-bold text-foreground line-clamp-1">CIMB Niaga Auto</h3>
+                <p className="text-[9px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
                   Opsi akad Syariah murni (Murabahah) maupun Konvensional dilengkapi asuransi all-risk komprehensif.
                 </p>
               </div>
-              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border/40 text-[9px] sm:text-[11px] font-bold text-primary">
+              <div className="pt-2 sm:pt-4 mt-2 sm:mt-4 border-t border-border/40 text-[8px] sm:text-[11px] font-bold text-primary truncate">
                 Opsi Akad Syariah & All-Risk
               </div>
             </div>
@@ -696,13 +696,13 @@ function SimulationContent() {
         </div>
 
         {/* 3. LUXURY EXECUTIVE HANDOVER BANNER */}
-        <div className="rounded-2xl sm:rounded-[2.5rem] bg-gradient-to-br from-card via-card to-primary/5 border border-border/70 p-3 sm:p-12 shadow-xl grid grid-cols-12 gap-2.5 sm:gap-8 items-center">
-          <div className="col-span-7 space-y-2 sm:space-y-4">
+        <div className="rounded-2xl sm:rounded-[2.5rem] bg-gradient-to-br from-card via-card to-primary/5 border border-border/70 p-4 sm:p-12 shadow-xl grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-8 items-center">
+          <div className="md:col-span-7 space-y-2 sm:space-y-4">
             <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-primary">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Executive Handover</span>
             </div>
-            <h3 className="font-display text-xs sm:text-3xl font-black text-foreground">
+            <h3 className="font-display text-xl sm:text-3xl font-black text-foreground">
               Kredit Disetujui, Kendaraan Impian Siap Dikirim ke Garasi Anda
             </h3>
             <p className="text-[9px] sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
@@ -717,7 +717,7 @@ function SimulationContent() {
               </span>
             </div>
           </div>
-          <div className="col-span-5">
+          <div className="md:col-span-5">
             <div className="rounded-2xl overflow-hidden aspect-[16/10] border border-border/70 shadow-lg relative group">
               <img 
                 src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1000&q=80" 

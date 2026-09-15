@@ -150,9 +150,9 @@ function FilterContent() {
   }
 
   return (
-    <div className="pt-24 pb-20 min-h-screen bg-secondary/30">
+    <div className="mobile-page-shell">
       {/* Theme Responsive Header */}
-      <div className="bg-card border-b border-border/60 py-8 sm:py-16 text-foreground relative overflow-hidden mb-5 sm:mb-10 shadow-sm">
+      <div className="bg-card border-b border-border/60 py-7 sm:py-16 text-foreground relative overflow-hidden mb-4 sm:mb-10 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
         <div className="relative mx-auto w-full max-w-[1536px] px-4 sm:px-10 lg:px-16 text-center">
           <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
@@ -170,10 +170,10 @@ function FilterContent() {
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16">
+      <div className="mobile-container">
         {/* Active Showroom Banner */}
         {mounted && currentAdminUser && (
-          <div className="mb-8 rounded-3xl bg-gradient-to-r from-amber-500/20 via-amber-500/10 to-primary/10 border border-amber-500/40 p-4 shadow-md flex items-center justify-center gap-3">
+          <div className="mb-4 sm:mb-8 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-500/20 via-amber-500/10 to-primary/10 border border-amber-500/40 p-3 sm:p-4 shadow-md flex items-center justify-center gap-3">
             <Store className="h-5 w-5 text-amber-500 shrink-0" />
             <p className="font-bold text-xs sm:text-sm text-foreground">
               📍 Mode Pratinjau Showroom: <strong className="text-primary">{currentAdminUser.name}</strong> ({currentCabang.toUpperCase()})
@@ -181,18 +181,18 @@ function FilterContent() {
           </div>
         )}
 
-        <div className="flex gap-2.5 sm:gap-8">
+        <div className="flex flex-col lg:flex-row gap-3 sm:gap-8">
           {/* Mobile Filter Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="lg:hidden flex items-center justify-center gap-1.5 rounded-xl bg-card border border-border p-2.5 font-bold shadow-sm text-[10px] sm:text-xs w-fit shrink-0"
+            className="lg:hidden flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-card border border-border px-3 font-bold shadow-sm text-xs shrink-0 active:scale-[0.99]"
           >
-            <SlidersHorizontal className="h-4 w-4 text-primary" /> Filter
+            <SlidersHorizontal className="h-3.5 w-3.5 text-primary" /> Filter Pencarian ({mounted ? filteredCars.length : 0} Unit)
           </button>
 
           {/* Sidebar Filters */}
           <aside className={`lg:w-80 shrink-0 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-            <div className="sticky top-28 rounded-3xl bg-card border border-border/60 p-6 shadow-xl space-y-6 text-xs">
+            <div className="lg:sticky lg:top-28 rounded-2xl sm:rounded-3xl bg-card border border-border/60 p-4 sm:p-6 shadow-xl space-y-5 sm:space-y-6 text-xs">
               <div className="flex items-center justify-between pb-4 border-b border-border/60">
                 <h2 className="font-bold text-base flex items-center gap-2 text-foreground">
                   <SlidersHorizontal className="h-4 w-4 text-primary" /> Filter Otomotif
@@ -342,18 +342,18 @@ function FilterContent() {
           {/* Results Grid */}
           <main className="flex-1">
             {/* Sort & Count Header */}
-            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-card p-4 rounded-2xl border border-border/50 shadow-sm text-xs">
-              <p className="font-semibold text-muted-foreground">
+            <div className="mb-3 sm:mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 bg-card p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border border-border/50 shadow-sm text-xs">
+              <p className="font-semibold text-muted-foreground text-[11px] sm:text-xs">
                 Menampilkan <strong className="text-foreground">{mounted ? filteredCars.length : 0}</strong> unit bersertifikat di <strong className="text-primary capitalize">{currentCabang.replace(/-/g, ' ')}</strong>
               </p>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-muted-foreground flex items-center gap-1">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
+                <span className="font-bold text-muted-foreground flex items-center gap-1 text-[11px]">
                   <ArrowUpDown className="h-3 w-3" /> Urutkan:
                 </span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="rounded-xl border border-border bg-muted/40 px-3 py-1.5 font-bold outline-none cursor-pointer focus:border-primary text-foreground"
+                  className="w-full rounded-xl border border-border bg-muted/40 px-2.5 py-1.5 sm:px-3 sm:py-2 font-bold outline-none cursor-pointer focus:border-primary text-foreground text-xs"
                 >
                   <option value="kredit_termurah">Paket Kredit Terendah (Termurah)</option>
                   <option value="cash_termurah">Harga Cash Terendah</option>
@@ -368,13 +368,13 @@ function FilterContent() {
                 <p className="text-muted-foreground animate-pulse text-sm font-bold">Memuat katalog mobil...</p>
               </div>
             ) : filteredCars.length > 0 ? (
-              <div className="grid grid-cols-2 xl:grid-cols-3 gap-2.5 sm:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
                 {filteredCars.map((car, i) => (
                   <CarCard key={car.id} car={car} index={i} />
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-border/70 py-24 text-center bg-card/50 px-6">
+              <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border border-dashed border-border/70 py-16 sm:py-24 text-center bg-card/50 px-6">
                 <div className="rounded-full bg-primary/10 p-4 mb-4 text-primary">
                   <Search className="h-8 w-8" />
                 </div>

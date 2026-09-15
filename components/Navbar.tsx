@@ -54,16 +54,16 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 px-6 sm:px-10 lg:px-16 pt-4 pointer-events-none transition-all duration-300">
+      <header className="fixed inset-x-0 top-0 z-50 px-3 sm:px-10 lg:px-16 pt-3 sm:pt-4 pointer-events-none transition-all duration-300">
         <div className={`mx-auto w-full max-w-[1536px] flex items-center justify-between pointer-events-auto rounded-full transition-all duration-500 ${
           isScrolled
-            ? 'bg-background/95 backdrop-blur-3xl border border-primary/20 shadow-[0_12px_40px_rgba(90,33,50,0.15)] px-5 py-3'
-            : 'bg-background/80 backdrop-blur-2xl border border-primary/10 px-6 py-3.5 shadow-[0_8px_32px_rgba(90,33,50,0.05)]'
+            ? 'bg-background/95 backdrop-blur-3xl border border-primary/20 shadow-[0_12px_40px_rgba(90,33,50,0.15)] px-3.5 sm:px-5 py-2.5 sm:py-3'
+            : 'bg-background/90 backdrop-blur-2xl border border-primary/10 px-4 sm:px-6 py-2.5 sm:py-3.5 shadow-[0_8px_32px_rgba(90,33,50,0.05)]'
         }`}>
           {/* Logo with Branch Pill */}
           <div className="flex items-center gap-3">
             <Link href={getNavHref('/')} className="flex items-center gap-2 group">
-              <span className={`font-display text-xl sm:text-2xl font-black tracking-[0.12em] uppercase transition-colors text-primary`}>
+              <span className={`font-display text-lg sm:text-2xl font-black tracking-[0.12em] uppercase transition-colors text-primary`}>
                 DENKEN<span className="text-foreground">.</span>
               </span>
               <span className={`hidden sm:inline-block rounded-full px-2.5 py-0.5 text-[9px] font-extrabold uppercase tracking-widest border border-primary/30 bg-primary/5 text-primary`}>
@@ -127,7 +127,7 @@ export function Navbar() {
           </nav>
 
           {/* Right Action Icons & VIP Button */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button 
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} 
               aria-label="Toggle Dark Mode" 
@@ -160,7 +160,7 @@ export function Navbar() {
               className={`rounded-full p-2 md:hidden transition-colors ${
                 isScrolled || !isHome
                   ? 'text-foreground hover:bg-muted'
-                  : 'text-white hover:bg-white/20'
+                  : 'text-foreground hover:bg-muted'
               }`}
             >
               {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -170,12 +170,12 @@ export function Navbar() {
 
         {/* Mobile Full Dropdown Menu */}
         {menuOpen && (
-          <div className="mx-auto mt-2 max-w-7xl rounded-3xl bg-background/95 backdrop-blur-2xl border border-border p-6 shadow-2xl md:hidden pointer-events-auto animate-in fade-in slide-in-from-top-4">
-            <nav className="flex flex-col space-y-3 text-sm font-semibold text-foreground">
+          <div className="mx-auto mt-2 max-w-7xl rounded-2xl bg-background/95 backdrop-blur-2xl border border-border p-3.5 shadow-2xl md:hidden pointer-events-auto animate-in fade-in slide-in-from-top-4">
+            <nav className="flex flex-col space-y-1.5 text-sm font-semibold text-foreground">
               <Link 
                 onClick={() => setMenuOpen(false)} 
                 href={getNavHref('/')} 
-                className="flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-muted"
+                className="flex items-center justify-between rounded-xl px-3 py-3 hover:bg-muted"
               >
                 <span>Beranda</span>
                 <span className="text-muted-foreground">→</span>
@@ -183,7 +183,7 @@ export function Navbar() {
               <Link 
                 onClick={() => setMenuOpen(false)} 
                 href={getNavHref('/mobil')} 
-                className="flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-muted"
+                className="flex items-center justify-between rounded-xl px-3 py-3 hover:bg-muted"
               >
                 <span>Koleksi Mobil</span>
                 <span className="text-muted-foreground">→</span>
@@ -191,7 +191,7 @@ export function Navbar() {
               <Link 
                 onClick={() => setMenuOpen(false)} 
                 href={getNavHref('/trade-in')} 
-                className="flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-muted"
+                className="flex items-center justify-between rounded-xl px-3 py-3 hover:bg-muted"
               >
                 <span>Smart Trade-In Suite</span>
                 <span className="text-muted-foreground">→</span>
@@ -199,7 +199,7 @@ export function Navbar() {
               <Link 
                 onClick={() => setMenuOpen(false)} 
                 href={getNavHref('/simulasi-kredit')} 
-                className="flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-muted"
+                className="flex items-center justify-between rounded-xl px-3 py-3 hover:bg-muted"
               >
                 <span>Simulasi Kredit</span>
                 <span className="text-muted-foreground">→</span>
@@ -207,7 +207,7 @@ export function Navbar() {
               <Link 
                 onClick={() => setMenuOpen(false)} 
                 href={getNavHref('/tentang-kami')} 
-                className="flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-muted"
+                className="flex items-center justify-between rounded-xl px-3 py-3 hover:bg-muted"
               >
                 <span>Tentang Kami</span>
                 <span className="text-muted-foreground">→</span>
@@ -226,7 +226,7 @@ export function Navbar() {
 
       {/* Mobile Bottom Quick Navigation */}
       <div className="fixed inset-x-0 bottom-0 z-50 md:hidden bg-background/90 backdrop-blur-xl border-t border-border/80 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-        <nav className="flex items-center justify-around px-3 py-2.5">
+        <nav className="flex items-center justify-around px-2.5 pt-2 pb-1">
           <Link href={getNavHref('/')} className={`flex flex-col items-center gap-1 p-1.5 transition-colors ${pathname === `/${currentCabang}` || pathname === '/' ? 'text-primary font-bold' : 'text-muted-foreground hover:text-foreground'}`}>
             <Home className="h-5 w-5" />
             <span className="text-[10px]">Beranda</span>

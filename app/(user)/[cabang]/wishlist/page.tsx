@@ -12,9 +12,9 @@ export default function WishlistPage() {
   const favoriteCars = cars.filter((car) => wishlistIds.includes(car.id))
 
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
+    <div className="mobile-page-shell">
       {/* Theme Responsive Header */}
-      <div className="bg-card border-b border-border/60 py-8 sm:py-16 text-foreground relative overflow-hidden mb-6 sm:mb-12 shadow-sm">
+      <div className="bg-card border-b border-border/60 py-7 sm:py-16 text-foreground relative overflow-hidden mb-5 sm:mb-12 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
         <div className="relative mx-auto w-full max-w-[1536px] px-4 sm:px-10 lg:px-16 text-center">
           <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
@@ -30,7 +30,7 @@ export default function WishlistPage() {
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16">
+      <div className="mobile-container">
         {favoriteCars.length > 0 ? (
           <div>
             <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
@@ -39,14 +39,14 @@ export default function WishlistPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
               {favoriteCars.map((car, i) => (
                 <CarCard key={car.id} car={car} index={i} />
               ))}
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-border/70 py-24 px-6 text-center bg-card/60 shadow-sm max-w-2xl mx-auto">
+          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border border-dashed border-border/70 py-16 sm:py-24 px-5 sm:px-6 text-center bg-card/60 shadow-sm max-w-2xl mx-auto">
             <div className="rounded-full bg-primary/10 p-6 mb-6 text-primary">
               <Heart className="h-12 w-12" />
             </div>

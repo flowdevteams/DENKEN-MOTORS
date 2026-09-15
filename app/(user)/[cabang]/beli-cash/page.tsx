@@ -95,8 +95,8 @@ function CashFormContent() {
   }
 
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
-      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16">
+    <div className="mobile-page-shell">
+      <div className="mobile-container">
         <div className="max-w-3xl mx-auto">
           <div className="mb-6 sm:mb-12 text-center">
           <h1 className="font-display text-xl sm:text-4xl font-black tracking-tight mb-2 sm:mb-4">Pembelian Mobil Cash</h1>
@@ -106,7 +106,7 @@ function CashFormContent() {
         </div>
 
         {/* Stepper */}
-        <div className="flex items-center justify-between mb-12 relative max-w-sm mx-auto">
+        <div className="flex items-center justify-between mb-8 sm:mb-12 relative max-w-sm mx-auto">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-border -z-10" />
           <div
             className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary -z-10 transition-all duration-500"
@@ -116,7 +116,7 @@ function CashFormContent() {
           {[1, 2, 3].map((s) => (
             <div
               key={s}
-              className={`flex h-10 w-10 items-center justify-center rounded-full border-4 border-background font-bold transition-colors ${
+              className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full border-2 sm:border-4 border-background text-xs sm:text-sm font-bold transition-colors ${
                 step >= s ? 'bg-primary text-primary-foreground shadow-md' : 'bg-muted text-muted-foreground'
               }`}
             >
@@ -134,53 +134,55 @@ function CashFormContent() {
                   handleNext()
                 }
           }
-          className="rounded-2xl sm:rounded-3xl border border-border/50 bg-card p-3 sm:p-10 shadow-2xl"
+          className="rounded-2xl sm:rounded-3xl border border-border/50 bg-card p-4 sm:p-10 shadow-2xl"
         >
           {step === 1 && (
-            <div className="space-y-6">
-              <h2 className="font-display text-2xl font-bold mb-6">1. Data Pemohon</h2>
-              <div>
-                <label className="text-sm font-bold mb-2 block">Nama Lengkap (sesuai KTP)</label>
-                <input
-                  required
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full rounded-xl border border-border bg-muted/50 p-4 outline-none focus:border-primary"
-                  placeholder="Sesuai KTP"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-bold mb-2 block">Nomor WhatsApp</label>
-                <input
-                  required
-                  type="tel"
-                  value={formData.whatsapp}
-                  onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                  className="w-full rounded-xl border border-border bg-muted/50 p-4 outline-none focus:border-primary"
-                  placeholder="0812xxxx"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-2.5 sm:gap-6">
+            <div className="space-y-4 sm:space-y-6">
+              <h2 className="font-display text-lg sm:text-2xl font-bold mb-3 sm:mb-6">1. Data Pemohon</h2>
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
                 <div>
-                  <label className="text-sm font-bold mb-2 block">Email</label>
+                  <label className="text-[10px] sm:text-sm font-bold mb-1 sm:mb-2 block text-muted-foreground uppercase tracking-wider">Nama Lengkap</label>
+                  <input
+                    required
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full rounded-xl border border-border bg-muted/50 p-2.5 sm:p-3.5 text-xs sm:text-sm outline-none focus:border-primary min-h-[38px]"
+                    placeholder="Sesuai KTP"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] sm:text-sm font-bold mb-1 sm:mb-2 block text-muted-foreground uppercase tracking-wider">No. WhatsApp</label>
+                  <input
+                    required
+                    type="tel"
+                    value={formData.whatsapp}
+                    onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                    className="w-full rounded-xl border border-border bg-muted/50 p-2.5 sm:p-3.5 text-xs sm:text-sm outline-none focus:border-primary min-h-[38px]"
+                    placeholder="0812xxxx"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                <div>
+                  <label className="text-[10px] sm:text-sm font-bold mb-1 sm:mb-2 block text-muted-foreground uppercase tracking-wider">Email</label>
                   <input
                     required
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-muted/50 p-4 outline-none focus:border-primary"
+                    className="w-full rounded-xl border border-border bg-muted/50 p-2.5 sm:p-3.5 text-xs sm:text-sm outline-none focus:border-primary min-h-[38px]"
                     placeholder="email@contoh.com"
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-bold mb-2 block">Kota Domisili</label>
+                  <label className="text-[10px] sm:text-sm font-bold mb-1 sm:mb-2 block text-muted-foreground uppercase tracking-wider">Kota Domisili</label>
                   <input
                     required
                     type="text"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-muted/50 p-4 outline-none focus:border-primary"
+                    className="w-full rounded-xl border border-border bg-muted/50 p-2.5 sm:p-3.5 text-xs sm:text-sm outline-none focus:border-primary min-h-[38px]"
                     placeholder="Contoh: Jakarta"
                   />
                 </div>
@@ -189,18 +191,18 @@ function CashFormContent() {
           )}
 
           {step === 2 && (
-            <div className="space-y-6">
-              <h2 className="font-display text-2xl font-bold mb-6">
+            <div className="space-y-4 sm:space-y-6">
+              <h2 className="font-display text-lg sm:text-2xl font-bold mb-3 sm:mb-6">
                 2. {searchParams.get('carId') ? 'Kendaraan Pilihan' : 'Pilih Kendaraan'}
               </h2>
               {!searchParams.get('carId') && (
                 <div>
-                  <label className="text-sm font-bold mb-2 block">Kendaraan Target</label>
+                  <label className="text-xs sm:text-sm font-bold mb-1 sm:mb-2 block">Kendaraan Target</label>
                   <select
                     required
                     value={formData.carId}
                     onChange={(e) => setFormData({ ...formData, carId: e.target.value })}
-                    className="w-full appearance-none rounded-xl border border-border bg-muted/50 p-4 outline-none focus:border-primary cursor-pointer"
+                    className="w-full appearance-none rounded-xl border border-border bg-muted/50 p-2.5 sm:p-4 text-xs sm:text-sm outline-none focus:border-primary cursor-pointer min-h-[40px]"
                   >
                     <option value="">-- Pilih Mobil --</option>
                     {cars.map((c) => (
@@ -212,18 +214,18 @@ function CashFormContent() {
                 </div>
               )}
               {selectedCar && (
-                <div className="rounded-2xl border border-border bg-muted/50 p-5 flex gap-5 items-center">
+                <div className="rounded-xl sm:rounded-2xl border border-border bg-muted/50 p-2.5 sm:p-5 flex items-center gap-2.5 sm:gap-5">
                   <img
                     src={selectedCar.image}
                     alt={selectedCar.name}
-                    className="h-20 w-32 object-cover object-center rounded-xl border border-border/50"
+                    className="h-16 w-24 sm:h-20 sm:w-32 object-cover object-center rounded-lg sm:rounded-xl border border-border/50 shrink-0"
                   />
-                  <div>
-                    <p className="font-bold font-display text-lg">{selectedCar.name}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
+                  <div className="min-w-0">
+                    <p className="font-bold font-display text-xs sm:text-lg truncate">{selectedCar.name}</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 truncate">
                       {selectedCar.year} • {selectedCar.transmission} • {selectedCar.engine}
                     </p>
-                    <p className="text-sm font-bold text-primary mt-1">
+                    <p className="text-xs sm:text-sm font-bold text-primary mt-1">
                       Rp {selectedCar.price.toLocaleString('id-ID')}
                     </p>
                   </div>
@@ -233,38 +235,38 @@ function CashFormContent() {
           )}
 
           {step === 3 && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <FileText className="h-7 w-7 text-primary" />
-                <h2 className="font-display text-2xl font-bold">3. Ringkasan Pembelian</h2>
+            <div className="space-y-4 sm:space-y-6">
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                <FileText className="h-5 w-5 sm:h-7 sm:w-7 text-primary" />
+                <h2 className="font-display text-lg sm:text-2xl font-bold">3. Ringkasan Pembelian</h2>
               </div>
 
-              <div className="rounded-2xl border border-border bg-muted/30 p-6 space-y-4 text-sm font-medium">
-                <div className="flex justify-between pb-3 border-b border-border/50">
+              <div className="rounded-xl sm:rounded-2xl border border-border bg-muted/30 p-3 sm:p-6 space-y-3 sm:space-y-4 text-xs sm:text-sm font-medium">
+                <div className="flex justify-between items-center pb-2 sm:pb-3 border-b border-border/50">
                   <span className="text-muted-foreground">Nama Lengkap</span>
                   <span className="font-bold text-foreground">{formData.name}</span>
                 </div>
-                <div className="flex justify-between pb-3 border-b border-border/50">
+                <div className="flex justify-between items-center pb-2 sm:pb-3 border-b border-border/50">
                   <span className="text-muted-foreground">Nomor WhatsApp</span>
                   <span className="font-bold text-foreground">{formData.whatsapp}</span>
                 </div>
-                <div className="flex justify-between pb-3 border-b border-border/50">
+                <div className="flex justify-between items-center pb-2 sm:pb-3 border-b border-border/50">
                   <span className="text-muted-foreground">Mobil Pilihan</span>
-                  <span className="font-bold text-foreground">{selectedCar?.name || '-'}</span>
+                  <span className="font-bold text-foreground truncate max-w-[160px] sm:max-w-none">{selectedCar?.name || '-'}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Harga Total (Cash)</span>
-                  <span className="font-bold text-primary text-lg">Rp {selectedCar ? selectedCar.price.toLocaleString('id-ID') : 0}</span>
+                  <span className="font-bold text-primary text-sm sm:text-lg">Rp {selectedCar ? selectedCar.price.toLocaleString('id-ID') : 0}</span>
                 </div>
               </div>
 
-              <label className="flex items-start gap-3 mt-4 cursor-pointer">
+              <label className="flex items-start gap-2.5 mt-3 cursor-pointer">
                 <input
                   type="checkbox"
                   required
-                  className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary"
+                  className="mt-0.5 h-4 w-4 rounded border-border text-primary focus:ring-primary"
                 />
-                <span className="text-xs text-muted-foreground leading-relaxed">
+                <span className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
                   Saya mengonfirmasi bahwa data yang saya berikan adalah benar, dan saya bersedia untuk dihubungi oleh tim sales DENKEN MOTORS terkait proses transaksi ini.
                 </span>
               </label>
@@ -272,19 +274,19 @@ function CashFormContent() {
           )}
 
           {/* Form Actions */}
-          <div className="mt-10 flex gap-4 pt-6 border-t border-border/50">
+          <div className="mt-6 sm:mt-10 flex gap-2.5 sm:gap-4 pt-4 sm:pt-6 border-t border-border/50">
             {step > 1 && (
               <button
                 type="button"
                 onClick={handlePrev}
-                className="h-14 rounded-full border border-border px-8 font-bold transition-all hover:bg-muted"
+                className="h-10 sm:h-12 rounded-full border border-border px-4 sm:px-8 text-xs sm:text-sm font-bold transition-all hover:bg-muted active:scale-95"
               >
                 Kembali
               </button>
             )}
             <button
               type="submit"
-              className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full bg-primary px-8 font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg"
+              className="flex h-10 sm:h-12 flex-1 items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-primary px-4 sm:px-8 text-xs sm:text-sm font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg active:scale-95"
             >
               {step === 3 ? 'Kirim Pengajuan' : 'Selanjutnya'} <ChevronRight className="h-4 w-4" />
             </button>
