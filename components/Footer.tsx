@@ -31,7 +31,7 @@ export function Footer() {
     <footer className="bg-background border-t border-border py-20 text-foreground relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
       
-      <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.5fr] lg:px-8 relative z-10">
+      <div className="mx-auto grid w-full max-w-[1536px] gap-12 px-6 sm:px-10 lg:px-16 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.5fr] relative z-10">
         <div>
           <Link href="/" className="font-display text-2xl font-black tracking-[0.2em]">
             DENKEN<span className="text-primary">.</span>
@@ -85,7 +85,7 @@ export function Footer() {
         </div>
       </div>
       
-      <div className="mx-auto mt-16 max-w-7xl border-t border-border px-5 pt-8 text-sm font-medium text-muted-foreground flex flex-col md:flex-row justify-between items-center gap-4 lg:px-8">
+      <div className="mx-auto mt-16 w-full max-w-[1536px] border-t border-border px-6 sm:px-10 lg:px-16 pt-8 text-sm font-medium text-muted-foreground flex flex-col md:flex-row justify-between items-center gap-4">
         <p>© 2026 DENKEN MOTORS. All Rights Reserved.</p>
         <div className="flex gap-6">
           <p className="hover:text-foreground transition-colors cursor-pointer">Privacy Policy</p>

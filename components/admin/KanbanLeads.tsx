@@ -59,6 +59,30 @@ export function KanbanLeads({ leads, allCars, onStatusChange, onOpenSpk }: Kanba
 
   const formatIDR = (n: number) => `Rp ${n.toLocaleString('id-ID')}`
 
+  const getLeadPriority = (lead: KanbanLeadItem) => {
+    if (lead.details?.isBookingLock || lead.type === 'Kredit' || (lead.details?.dp && lead.details.dp > 50000000)) {
+      return { label: '🔥 HOT PROSPECT', color: 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30' }
+    }
+    if (lead.type === 'Trade-In' || lead.status === 'TestDrive' || lead.status === 'Negosiasi') {
+      return { label: '⚡ WARM LEAD', color: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30' }
+    }
+    return { label: '💬 INQUIRY', color: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30' }
+  }
+
+  const getDaysOnLot = (car: any) => {
+    if (!car) return null
+    // Pseudo days calculation based on car name/id for demo stability
+    const hash = (car.name || car.id || 'car').split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0)
+    const days = (hash % 52) + 7
+    
+    if (days > 45) {
+      return { days, label: `🔴 ${days} Hari (Aging Stock - Push Sales)`, isWarning: true }
+    } else if (days > 28) {
+      return { days, label: `🟡 ${days} Hari (Normal)`, isWarning: false }
+    }
+    return { days, label: `🟢 ${days} Hari (Unit Segar)`, isWarning: false }
+  }
+
   const normalizeStatus = (status: string): string => {
     if (status === 'Diproses') return 'FollowUp'
     if (status === 'Disetujui') return 'SPK'
@@ -123,12 +147,15 @@ export function KanbanLeads({ leads, allCars, onStatusChange, onOpenSpk }: Kanba
                       (c) => c.id === lead.carId || (lead.carName && c.name.toLowerCase() === lead.carName.toLowerCase())
                     )
 
+                    const priority = getLeadPriority(lead)
+                    const daysInfo = getDaysOnLot(matchedCar)
+
                     return (
                       <div
                         key={lead.id}
                         className="rounded-xl border border-border bg-background/80 p-4 shadow-sm hover:shadow-md transition-all space-y-3"
                       >
-                        {/* Top: Customer Name & Type */}
+                        {/* Top: Customer Name & Type & Priority */}
                         <div className="flex items-start justify-between gap-2">
                           <div>
                             <p className="font-extrabold text-sm text-foreground">{lead.name}</p>
@@ -136,24 +163,41 @@ export function KanbanLeads({ leads, allCars, onStatusChange, onOpenSpk }: Kanba
                               <Phone className="h-3 w-3 text-primary" /> {lead.whatsapp}
                             </p>
                           </div>
-                          <span className="rounded bg-primary/10 text-primary text-[10px] font-extrabold px-2 py-0.5 uppercase tracking-wide">
-                            {lead.type}
-                          </span>
+                          <div className="flex flex-col items-end gap-1">
+                            <span className={`rounded border text-[9px] font-black px-1.5 py-0.5 uppercase tracking-wider ${priority.color}`}>
+                              {priority.label}
+                            </span>
+                            <span className="rounded bg-primary/10 text-primary text-[9px] font-extrabold px-2 py-0.5 uppercase tracking-wide">
+                              {lead.type}
+                            </span>
+                          </div>
                         </div>
 
-                        {/* Car Incaran */}
-                        <div className="rounded-lg bg-muted/50 p-2.5 flex items-center gap-2.5">
-                          <CarIcon className="h-4 w-4 text-primary shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <p className="font-bold text-xs text-foreground truncate">
-                              {matchedCar ? matchedCar.name : lead.carName || 'Unit Showroom'}
-                            </p>
-                            {matchedCar && (
-                              <p className="text-[10px] text-muted-foreground font-mono">
-                                {formatIDR(matchedCar.priceCredit || matchedCar.price)}
+                        {/* Car Incaran & Days on Lot */}
+                        <div className="rounded-lg bg-muted/50 p-2.5 space-y-1.5">
+                          <div className="flex items-center gap-2.5">
+                            <CarIcon className="h-4 w-4 text-primary shrink-0" />
+                            <div className="min-w-0 flex-1">
+                              <p className="font-bold text-xs text-foreground truncate">
+                                {matchedCar ? matchedCar.name : lead.carName || 'Unit Showroom'}
                               </p>
-                            )}
+                              {matchedCar && (
+                                <p className="text-[10px] text-muted-foreground font-mono">
+                                  {formatIDR(matchedCar.priceCredit || matchedCar.price)}
+                                </p>
+                              )}
+                            </div>
                           </div>
+
+                          {/* Aging Stock Indicator (Showroom Cash Flow Vital) */}
+                          {daysInfo && (
+                            <div className="flex items-center justify-between text-[10px] pt-1.5 border-t border-border/40">
+                              <span className="text-muted-foreground font-semibold">Umur Unit:</span>
+                              <span className={`font-extrabold ${daysInfo.isWarning ? 'text-rose-600 dark:text-rose-400 font-black' : 'text-foreground'}`}>
+                                {daysInfo.label}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Sales Assigned */}

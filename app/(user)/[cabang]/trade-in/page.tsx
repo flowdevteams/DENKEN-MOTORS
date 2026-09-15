@@ -23,7 +23,7 @@ import {
 import { useStore } from '@/store/useStore'
 import { createLead } from '@/app/actions/leadActions'
 
-const formatIDR = (n: number) => `Rp ${Math.round(n).toLocaleString('id-ID')}`
+const formatIDR = (n: number) => `Rp\u00A0${Math.round(n).toLocaleString('id-ID')}`
 
 const POPULAR_BRANDS = [
   'Toyota', 'Honda', 'Mitsubishi', 'Hyundai', 'Mazda', 'Nissan', 'BMW', 'Mercedes-Benz', 'Suzuki', 'Daihatsu'
@@ -169,9 +169,12 @@ export default function TradeInPage() {
           </div>
 
           <div>
-            <span className="rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-3.5 py-1 text-xs font-black tracking-widest uppercase">
-              PENGAJUAN TRADE-IN SUKSES
-            </span>
+            <div className="inline-flex items-center gap-2 mb-2">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-emerald-600 dark:text-emerald-400">
+                Pengajuan Trade-In Sukses
+              </span>
+            </div>
             <h1 className="font-display text-2xl sm:text-3xl font-black mt-3 text-foreground">
               Simulasi Tukar Tambah Terverifikasi
             </h1>
@@ -229,30 +232,96 @@ export default function TradeInPage() {
 
   return (
     <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
-      {/* Header Banner */}
-      <div className="bg-card border-b border-border/60 py-16 text-foreground relative overflow-hidden mb-10 shadow-sm">
+      {/* 1. HERO SECTION: Cinematic Editorial with Mixed Typography */}
+      <section className="bg-card border-b border-border/60 py-8 sm:py-24 text-foreground relative overflow-hidden mb-6 sm:mb-12 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 mb-4 text-primary text-xs font-extrabold uppercase tracking-widest">
-            <GitCompareArrows className="h-4 w-4" /> Smart Trade-In Suite
-          </div>
-          <h1 className="font-display text-3xl sm:text-5xl font-black tracking-tight">
-            Kalkulator Selisih Tukar Tambah
-          </h1>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-            Dapatkan taksiran tertinggi untuk mobil lama Anda dan langsung hitung sisa kekurangan dana untuk upgrade ke mobil impian showroom.
-          </p>
-        </div>
-      </div>
+        <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-black/5 dark:bg-black/40 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="mx-auto max-w-4xl px-5 lg:px-8">
-        {/* Stepper Progress Bar */}
-        <div className="flex items-center justify-between mb-8 relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-border -z-10" />
-          <div
-            className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary -z-10 transition-all duration-500"
-            style={{ width: `${(step - 1) * 50}%` }}
-          />
+        <div className="relative mx-auto w-full max-w-[1536px] px-4 sm:px-10 lg:px-16 text-center">
+          <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
+            <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+              Smart Trade-In Suite
+            </span>
+          </div>
+
+          <h1 className="font-display text-xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] sm:leading-[1.05] text-foreground max-w-4xl mx-auto">
+            Kalkulator Selisih <br className="hidden sm:block" />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary to-foreground/80">
+              TUKAR TAMBAH INSTAN,
+            </span>{' '}
+            <span className="font-serif italic font-normal text-muted-foreground sm:block">
+              transparan & presisi.
+            </span>
+          </h1>
+
+          <p className="mt-2 sm:mt-4 text-muted-foreground max-w-2xl mx-auto text-[11px] sm:text-lg leading-relaxed font-normal">
+            Dapatkan taksiran harga pasar tertinggi untuk kendaraan lama Anda, hitung sisa kekurangan dana bersih, dan langsung upgrade ke mobil impian showroom DENKEN tanpa spekulasi.
+          </p>
+
+          <div className="pt-2 sm:pt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-6 text-[9px] sm:text-xs text-muted-foreground font-semibold">
+            <span className="flex items-center gap-1 sm:gap-2">
+              <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" /> Valuasi Algoritma Pasar Obyektif
+            </span>
+            <span className="flex items-center gap-1 sm:gap-2">
+              <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" /> Menerima Seluruh Merek & Model
+            </span>
+            <span className="flex items-center gap-1 sm:gap-2">
+              <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" /> Inspeksi Fisik Gratis
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* OUTER WORKSPACE WRAPPER (Aligned with Navbar max-w-[1536px] px-6 sm:px-10 lg:px-16) */}
+      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16 space-y-5 sm:space-y-12">
+        {/* Contextual Visual Card Above Form */}
+        <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card overflow-hidden shadow-lg grid grid-cols-12 items-center">
+          <div className="col-span-7 p-3 sm:p-10 space-y-1.5 sm:space-y-3">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Nilai Appraisal Kompetitif</span>
+            </div>
+            <h3 className="font-display text-xl sm:text-2xl lg:text-3xl font-black text-foreground leading-snug">
+              Upgrade Mobil Tanpa Khawatir Terdepresiasi Berlebihan
+            </h3>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Tim penaksir bersertifikasi DENKEN mengevaluasi riwayat servis dan kondisi fisik kendaraan lama Anda secara adil. Nilai taksiran langsung memotong harga mobil showroom impian Anda tanpa potongan biaya administrasi tersembunyi.
+            </p>
+            <div className="flex flex-wrap items-center gap-4 pt-1 text-[11px] font-bold text-foreground">
+              <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="h-3.5 w-3.5" /> Nilai Berlaku 7 Hari
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Sisa Dana Bisa Dicicil
+              </span>
+            </div>
+          </div>
+          <div className="col-span-5 h-32 sm:h-56 md:h-full relative overflow-hidden">
+            <img 
+              src="/services/trade-in.jpg" 
+              alt="DENKEN Smart Trade-In Suite" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-card via-transparent to-transparent" />
+            <span className="absolute bottom-4 left-5 text-[10px] font-black uppercase tracking-wider text-white bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+              Appraisal Center
+            </span>
+          </div>
+        </div>
+
+        {/* MAIN WORKSPACE GRID: Form on Left (8 cols) + Sticky Live Valuation Card on Right (4 cols) */}
+        <div className="grid grid-cols-12 gap-2.5 sm:gap-8 items-start">
+          {/* LEFT: Stepper & Form */}
+          <div className="col-span-7 sm:col-span-8 space-y-4 sm:space-y-6">
+            {/* Stepper Progress Bar */}
+            <div className="flex items-center justify-between mb-4 relative">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-border -z-10" />
+              <div
+                className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary -z-10 transition-all duration-500"
+                style={{ width: `${(step - 1) * 50}%` }}
+              />
 
           {[
             { s: 1, label: '1. Mobil Lama Anda' },
@@ -284,7 +353,7 @@ export default function TradeInPage() {
                   setStep((s) => s + 1)
                 }
           }
-          className="rounded-3xl border border-border/60 bg-card p-6 sm:p-10 shadow-xl space-y-6 text-xs"
+          className="rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-3 sm:p-10 shadow-xl space-y-4 sm:space-y-6 text-xs"
         >
           {/* STEP 1: DATA MOBIL LAMA */}
           {step === 1 && (
@@ -347,7 +416,7 @@ export default function TradeInPage() {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-2.5 sm:gap-6">
                 <div>
                   <label className="font-bold text-muted-foreground block mb-1">Transmisi</label>
                   <select
@@ -413,9 +482,12 @@ export default function TradeInPage() {
               {/* Real-Time Appraisal Output Banner */}
               <div className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
-                  <span className="rounded-md bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-black px-2 py-0.5 uppercase tracking-wider">
-                    ESTIMASI TAKSIRAN HARGA PASAR
-                  </span>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.25em] text-emerald-600 dark:text-emerald-400">
+                      Estimasi Taksiran Harga Pasar
+                    </span>
+                  </div>
                   <p className="font-display text-2xl font-black text-foreground mt-1">
                     {formatIDR(oldCarAppraisal.min)} – {formatIDR(oldCarAppraisal.max)}
                   </p>
@@ -715,6 +787,209 @@ export default function TradeInPage() {
           )}
         </form>
       </div>
+
+      {/* RIGHT: STICKY LIVE VALUATION SIDEBAR */}
+      <div className="col-span-5 sm:col-span-4 sticky top-28 space-y-3 sm:space-y-6">
+        <div className="rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-3 sm:p-7 shadow-xl space-y-3 sm:space-y-6">
+          <div className="flex items-center justify-between pb-4 border-b border-border/50">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-[0.25em] text-primary block">
+                Kalkulasi Real-Time
+              </span>
+              <h3 className="font-display text-base font-bold text-foreground mt-0.5">
+                Ringkasan Valuasi
+              </h3>
+            </div>
+            <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Live Estimate
+            </span>
+          </div>
+
+          {/* Mobil Lama Appraisal */}
+          <div className="space-y-1.5">
+            <span className="text-[11px] text-muted-foreground font-semibold block">Kendaraan Lama Anda</span>
+            <p className="font-bold text-foreground text-sm">
+              {myCarBrand} {myCarModel} ({myCarYear})
+            </p>
+            <div className="p-3 rounded-2xl bg-secondary/70 border border-border/60">
+              <div className="flex items-baseline justify-between">
+                <span className="text-xs text-muted-foreground">Taksiran Nilai:</span>
+                <span className="font-black text-base text-emerald-600 dark:text-emerald-400">
+                  {formatIDR(oldCarAppraisal.median)}
+                </span>
+              </div>
+              <div className="flex justify-between text-[10px] text-muted-foreground mt-1 pt-1 border-t border-border/40">
+                <span>Rentang Pasar:</span>
+                <span>{formatIDR(oldCarAppraisal.min)} - {formatIDR(oldCarAppraisal.max)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Target Car Preview */}
+          <div className="space-y-1.5">
+            <span className="text-[11px] text-muted-foreground font-semibold block">Unit Impian Showroom</span>
+            {selectedTargetCar ? (
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-secondary/70 border border-border/60">
+                <img 
+                  src={selectedTargetCar.image} 
+                  alt={selectedTargetCar.name} 
+                  className="w-16 h-12 rounded-xl object-cover border border-border/50 shrink-0" 
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-xs text-foreground truncate">{selectedTargetCar.name}</p>
+                  <p className="text-[11px] font-extrabold text-primary">{formatIDR(selectedTargetCar.price)}</p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground italic">Belum memilih unit showroom</p>
+            )}
+          </div>
+
+          {/* Net Difference Highlight */}
+          <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 space-y-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-primary block">
+              {netDifference >= 0 ? 'Sisa Selisih Kekurangan' : 'Selisih Lebih (Dana Kembali)'}
+            </span>
+            <p className="font-display text-2xl font-black text-primary">
+              {formatIDR(Math.abs(netDifference))}
+            </p>
+            {remainderPaymentType === 'Kredit' && monthlyInstallment > 0 && (
+              <p className="text-[11px] font-bold text-foreground/90 pt-1 border-t border-primary/20">
+                Estimasi Cicilan: <strong className="text-primary">{formatIDR(monthlyInstallment)}</strong> / bln ({remainderTenor} Thn)
+              </p>
+            )}
+          </div>
+
+          {/* Guarantee bullets */}
+          <div className="space-y-2 pt-2 text-[11px] text-muted-foreground font-medium">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+              <span>Nilai taksiran dikunci garansi 7 hari</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
+              <span>Gratis inspeksi fisik langsung di rumah</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
+              <span>Jaminan serah terima dokumen Samsat sah</span>
+            </div>
+          </div>
+
+          {/* Direct Concierge Link */}
+          <a
+            href={`https://wa.me/6287709165697?text=Halo%20DENKEN%20MOTORS,%20saya%20ingin%20konsultasi%20tukar%20tambah%20mobil%20${encodeURIComponent(myCarBrand + ' ' + myCarModel)}%20ke%20${encodeURIComponent(selectedTargetCar?.name || 'unit showroom')}.`}
+            target="_blank"
+            rel="noreferrer"
+            className="w-full inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 font-bold text-xs text-primary transition"
+          >
+            <Send className="h-3.5 w-3.5" /> Chat Spesialis Trade-In
+          </a>
+        </div>
+      </div>
     </div>
+
+    {/* 2. THREE-STEP TRADE-IN VISUAL PROTOCOL */}
+    <div className="space-y-12 pt-8">
+      <div className="text-center max-w-2xl mx-auto space-y-3">
+        <div className="inline-flex items-center gap-2.5">
+          <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+          <span className="text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+            Trade-In Protocol
+          </span>
+        </div>
+        <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tight text-foreground">
+          Alur Tukar Tambah <span className="font-serif italic font-normal text-muted-foreground">Transparan & Terstruktur.</span>
+        </h2>
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Tidak ada keraguan atau biaya siluman. Tiga tahapan sederhana yang memastikan transaksi tukar tambah Anda aman, cepat, dan menguntungkan.
+        </p>
+      </div>
+
+      <div className="grid sm:grid-cols-3 gap-6">
+        <div className="rounded-[2.2rem] border border-border/60 bg-card overflow-hidden shadow-sm hover:border-primary/40 hover:shadow-lg transition-all flex flex-col justify-between group">
+          <div className="h-44 overflow-hidden relative">
+            <img 
+              src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80" 
+              alt="Formulir & Valuasi Real Time" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            <span className="absolute bottom-3 left-4 text-[10px] font-black uppercase tracking-wider text-rose-200">
+              Tahap 01 • Valuasi
+            </span>
+          </div>
+          <div className="p-3 sm:p-6 space-y-1 sm:space-y-2">
+            <h3 className="font-display text-[10px] sm:text-base font-bold text-foreground">Kalkulasi Spesifikasi Mobil</h3>
+            <p className="text-[8px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
+              Pilih merek, tahun, transmisi, dan kilometer mobil lama Anda untuk memperoleh taksiran harga pasar terakreditasi dalam hitungan detik.
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-[2.2rem] border border-border/60 bg-card overflow-hidden shadow-sm hover:border-primary/40 hover:shadow-lg transition-all flex flex-col justify-between group">
+          <div className="h-44 overflow-hidden relative">
+            <img 
+              src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80" 
+              alt="Inspeksi Fisik & Sasis" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            <span className="absolute bottom-3 left-4 text-[10px] font-black uppercase tracking-wider text-rose-200">
+              Tahap 02 • Inspeksi
+            </span>
+          </div>
+          <div className="p-3 sm:p-6 space-y-1 sm:space-y-2">
+            <h3 className="font-display text-[10px] sm:text-base font-bold text-foreground">Inspeksi Fisik & Dokumen</h3>
+            <p className="text-[8px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
+              Tim appraiser tersertifikasi memeriksa kondisi sasis, kelistrikan, mesin, dan keabsahan BPKB/STNK langsung di showroom atau kediaman Anda.
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-[2.2rem] border border-border/60 bg-card overflow-hidden shadow-sm hover:border-primary/40 hover:shadow-lg transition-all flex flex-col justify-between group">
+          <div className="h-44 overflow-hidden relative">
+            <img 
+              src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80" 
+              alt="Serah Terima & Bawa Pulang" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            <span className="absolute bottom-3 left-4 text-[10px] font-black uppercase tracking-wider text-rose-200">
+              Tahap 03 • Serah Terima
+            </span>
+          </div>
+          <div className="p-3 sm:p-6 space-y-1 sm:space-y-2">
+            <h3 className="font-display text-[10px] sm:text-base font-bold text-foreground">Pelunasan & Serah Terima</h3>
+            <p className="text-[8px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
+              Nilai mobil lama langsung memotong harga mobil impian. Sisa selisih dana dapat dibayar tunai atau dicicil dengan leasing rekanan resmi.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 4 Trust Points */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 pt-4">
+        <div className="rounded-xl sm:rounded-2xl border border-border/60 bg-card p-2.5 sm:p-5 text-center shadow-sm">
+          <span className="font-display text-lg sm:text-2xl font-black text-primary block">Rp 0</span>
+          <span className="text-[9px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 sm:mt-1 block">Biaya Penaksiran & Appraisal</span>
+        </div>
+        <div className="rounded-xl sm:rounded-2xl border border-border/60 bg-card p-2.5 sm:p-5 text-center shadow-sm">
+          <span className="font-display text-lg sm:text-2xl font-black text-primary block">7 Hari</span>
+          <span className="text-[9px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 sm:mt-1 block">Masa Kunci Nilai Penawaran</span>
+        </div>
+        <div className="rounded-xl sm:rounded-2xl border border-border/60 bg-card p-2.5 sm:p-5 text-center shadow-sm">
+          <span className="font-display text-lg sm:text-2xl font-black text-primary block">100%</span>
+          <span className="text-[9px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 sm:mt-1 block">Keabsahan Dokumen Samsat</span>
+        </div>
+        <div className="rounded-xl sm:rounded-2xl border border-border/60 bg-card p-2.5 sm:p-5 text-center shadow-sm">
+          <span className="font-display text-lg sm:text-2xl font-black text-primary block">1 Hari</span>
+          <span className="text-[9px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 sm:mt-1 block">Proses Serah Terima Kilat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   )
 }

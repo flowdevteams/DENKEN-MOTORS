@@ -56,25 +56,33 @@ export default function ContactPage() {
   return (
     <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
       {/* Theme Responsive Header */}
-      <div className="bg-card border-b border-border/60 py-16 text-foreground relative overflow-hidden mb-12 shadow-sm">
+      <div className="bg-card border-b border-border/60 py-8 sm:py-16 text-foreground relative overflow-hidden mb-6 sm:mb-12 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <MessageSquare className="h-7 w-7" />
+        <div className="relative mx-auto w-full max-w-[1536px] px-4 sm:px-10 lg:px-16 text-center">
+          <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
+            <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+              Direct Concierge
+            </span>
           </div>
-          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight">Hubungi Kami</h1>
-          <p className="mt-4 text-muted-foreground max-w-xl mx-auto text-base">
+          <h1 className="font-display text-xl sm:text-5xl font-black tracking-tight">Hubungi Kami</h1>
+          <p className="mt-2 sm:mt-4 text-muted-foreground max-w-xl mx-auto text-[11px] sm:text-base">
             Tim konsultan otomotif profesional kami siap membantu segala kebutuhan kendaraan impian Anda.
           </p>
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="grid lg:grid-cols-[1fr_1.3fr] gap-12 mb-20">
+      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16">
+        <div className="grid grid-cols-12 gap-2.5 sm:gap-12 mb-10 sm:mb-20">
           {/* Showroom Info */}
-          <div className="space-y-8">
+          <div className="col-span-5 space-y-4 sm:space-y-8">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary mb-2">Showroom Utama</p>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="flex h-1.5 w-1.5 rounded-full bg-primary" />
+                <span className="text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+                  Showroom Utama
+                </span>
+              </div>
               <h2 className="font-display text-3xl font-extrabold tracking-tight">DENKEN MOTORS Jakarta</h2>
               <p className="mt-3 text-muted-foreground leading-relaxed">
                 Kunjungi showroom premium kami untuk melihat langsung koleksi kendaraan terbaik dan melakukan test drive.
@@ -154,7 +162,7 @@ export default function ContactPage() {
           </div>
 
           {/* Form Inquiry */}
-          <div className="rounded-3xl border border-border/50 bg-card p-8 sm:p-10 shadow-2xl h-fit">
+          <div className="col-span-7 rounded-2xl sm:rounded-3xl border border-border/50 bg-card p-4 sm:p-10 shadow-2xl h-fit">
             <h3 className="font-display text-2xl font-bold mb-2">Kirim Pesan / Inkuiri</h3>
             <p className="text-sm text-muted-foreground mb-8">
               Isi formulir di bawah ini. Tim Sales kami akan menghubungi Anda dalam waktu 15 menit.
@@ -266,7 +274,12 @@ export default function ContactPage() {
         {/* FAQs */}
         <div className="max-w-4xl mx-auto mt-16">
           <div className="text-center mb-10">
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary mb-2">FAQ</p>
+            <div className="inline-flex items-center gap-2 mb-2">
+              <span className="flex h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+                Pertanyaan Sering Diajukan
+              </span>
+            </div>
             <h2 className="font-display text-3xl font-extrabold">Pertanyaan Sering Diajukan</h2>
           </div>
 

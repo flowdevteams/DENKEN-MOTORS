@@ -211,9 +211,11 @@ export function ProductStageCarousel({ currentCabang, onLockUnit, onTestDrive }:
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header (Floating Frosted Luxury Pavilion Centered Across 50/50 Split) */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-10 sm:mb-14 p-6 sm:p-8 rounded-[2rem] bg-white/85 dark:bg-card/85 backdrop-blur-2xl border border-border/60 shadow-[0_15px_45px_rgba(0,0,0,0.1)]">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.25em] text-primary shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-ping" />
-            <span>Tested Auto Dealership • 150-Point Certified</span>
+          <div className="inline-flex items-center gap-2.5">
+            <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+              Tested Auto Dealership • 150-Point Certified
+            </span>
           </div>
 
           <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.05] uppercase text-foreground">

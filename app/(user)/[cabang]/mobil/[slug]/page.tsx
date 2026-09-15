@@ -15,11 +15,13 @@ import {
   MessageSquare,
   Calculator,
   Lock,
-  Calendar
+  Calendar,
+  FileText
 } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { BookingModal } from '@/components/BookingModal'
 import { TestDriveModal } from '@/components/TestDriveModal'
+import { InspectionAuditModal } from '@/components/InspectionAuditModal'
 
 const formatIDR = (n: number) => `Rp ${n.toLocaleString('id-ID')}`
 
@@ -34,6 +36,7 @@ export default function CarDetailPage() {
   const [activeImage, setActiveImage] = useState(0)
   const [isBookingOpen, setIsBookingOpen] = useState(false)
   const [isTestDriveOpen, setIsTestDriveOpen] = useState(false)
+  const [isAuditOpen, setIsAuditOpen] = useState(false)
 
   if (!car) {
     return (
@@ -68,7 +71,7 @@ export default function CarDetailPage() {
   return (
     <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
       {/* Breadcrumbs */}
-      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-6">
+      <div className="mx-auto w-full max-w-[1536px] px-6 sm:px-10 lg:px-16 py-6">
         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
           <Link href={`/${cabang}`} className="hover:text-primary transition-colors">
             Home
@@ -82,7 +85,7 @@ export default function CarDetailPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <div className="mx-auto w-full max-w-[1536px] px-6 sm:px-10 lg:px-16">
         <div className="grid lg:grid-cols-[1.4fr_1fr] gap-10">
           {/* Left Column: Images & Specs */}
           <div className="space-y-10">
@@ -191,9 +194,12 @@ export default function CarDetailPage() {
             <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-8 shadow-xl">
               <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
                 <div>
-                  <span className="rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest">
-                    DENKEN CERTIFIED QUALITY
-                  </span>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[11px] font-black uppercase tracking-[0.28em] text-emerald-600 dark:text-emerald-400">
+                      DENKEN Certified Quality
+                    </span>
+                  </div>
                   <h2 className="font-display text-2xl font-bold mt-2 text-foreground">
                     Sertifikasi Inspeksi 150 Titik
                   </h2>
@@ -244,6 +250,20 @@ export default function CarDetailPage() {
                     <p className="text-xs text-muted-foreground mt-0.5">BPKB, STNK, Faktur Asli telah lolos uji cek fisik Samsat & Ditlantas Polda.</p>
                   </div>
                 </div>
+              </div>
+
+              {/* Action Trigger for Full Digital Report */}
+              <div className="mt-6 pt-5 border-t border-emerald-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <p className="text-xs text-muted-foreground">
+                  Semua titik uji telah tersimpan dan diverifikasi dalam sistem audit digital DENKEN.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsAuditOpen(true)}
+                  className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2"
+                >
+                  <FileText className="h-4 w-4" /> Buka Lembar Audit Digital 150 Titik →
+                </button>
               </div>
             </div>
 
@@ -450,6 +470,12 @@ export default function CarDetailPage() {
         onClose={() => setIsTestDriveOpen(false)}
         car={car}
         currentCabang={cabang}
+      />
+
+      <InspectionAuditModal
+        isOpen={isAuditOpen}
+        onClose={() => setIsAuditOpen(false)}
+        car={car}
       />
     </div>
   )

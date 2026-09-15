@@ -19,6 +19,7 @@ import { ProductStageCarousel } from '@/components/ProductStageCarousel'
 
 const BookingModal = dynamic(() => import('@/components/BookingModal').then(m => m.BookingModal), { ssr: false })
 const TestDriveModal = dynamic(() => import('@/components/TestDriveModal').then(m => m.TestDriveModal), { ssr: false })
+const InspectionAuditModal = dynamic(() => import('@/components/InspectionAuditModal').then(m => m.InspectionAuditModal), { ssr: false })
 
 const ICON_MAP: Record<string, React.ElementType> = {
   ShieldCheck, Sparkles, Calculator, GitCompareArrows, Clock, ThumbsUp, Star, CarIcon, Heart, Award, CheckCircle, Zap
@@ -74,6 +75,7 @@ function HomeContent() {
   // Modals state
   const [selectedBookingCar, setSelectedBookingCar] = useState<any | null>(null)
   const [selectedTestDriveCar, setSelectedTestDriveCar] = useState<any | null>(null)
+  const [selectedAuditCar, setSelectedAuditCar] = useState<any | null>(null)
   const [selectedFlagship, setSelectedFlagship] = useState<'porsche' | 'amg'>('porsche')
 
   const [brand, setBrand] = useState('')
@@ -149,12 +151,12 @@ function HomeContent() {
       )}
 
       {/* OUTER CANVAS WRAPPER (Refined Framed Luxury Architecture) */}
-      <main className="w-full max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 pt-24 pb-24 space-y-24 sm:space-y-32">
+      <main className="w-full max-w-[1536px] mx-auto px-4 sm:px-10 lg:px-16 pt-20 sm:pt-24 pb-20 sm:pb-24 space-y-14 sm:space-y-24 lg:space-y-32">
         
         {/* TOP GROUP: Hero Canvas, Video Grid, and Search Filter tightly bundled */}
-        <div className="space-y-0 sm:space-y-2">
+        <div className="space-y-2 sm:space-y-3">
         {/* 1. HERO SECTION: Framed Canvas, Sculpted Notch, Editorial Mixed Typography */}
-        <section className="dark relative rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden min-h-[55vh] lg:h-[420px] xl:h-[460px] flex flex-col justify-between border border-primary/30 shadow-[0_30px_80px_-20px_rgba(90,33,50,0.5)] bg-background text-foreground">
+        <section className="dark relative rounded-[1.75rem] sm:rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden min-h-[440px] sm:min-h-[440px] lg:h-[420px] xl:h-[460px] flex flex-col justify-between border border-primary/30 shadow-[0_30px_80px_-20px_rgba(90,33,50,0.5)] bg-background text-foreground">
           {/* Background High-Definition Visual */}
           <div className="absolute inset-0 overflow-hidden">
             <motion.img 
@@ -170,79 +172,85 @@ function HomeContent() {
             <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent" />
           </div>
 
-          {/* Top Row: Micro Kicker & Editorial Summary */}
-          <div className="relative z-10 pt-6 sm:pt-8 lg:pt-6 px-6 sm:px-12 lg:px-16 flex flex-col md:flex-row md:items-start justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="h-2 w-2 rounded-full bg-primary animate-pulse shadow-[0_0_12px_rgba(120,45,67,0.9)]" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.28em] text-foreground/80">
+          {/* Top Row: Micro Kicker & Editorial Summary (Preserves Two-Sided Desktop Layout on Mobile) */}
+          <div className="relative z-10 pt-4 sm:pt-7 lg:pt-6 px-4 sm:px-12 lg:px-16 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <span className="h-2 w-2 rounded-full bg-primary animate-pulse shadow-[0_0_12px_rgba(120,45,67,0.9)] shrink-0" />
+              <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.18em] sm:tracking-[0.28em] text-foreground/90 truncate">
                 Atelier Otomotif • Cabang {currentCabang.replace(/-/g, ' ')}
               </span>
             </div>
 
-            <p className="max-w-md text-xs sm:text-sm font-medium leading-relaxed text-foreground/80 backdrop-blur-xl bg-background/30 border border-primary/20 rounded-2xl p-4 md:p-5 shadow-lg">
+            {/* Desktop / Tablet: Full Editorial Card */}
+            <p className="hidden md:block max-w-xs lg:max-w-md text-xs sm:text-sm font-medium leading-relaxed text-foreground/80 backdrop-blur-xl bg-background/30 border border-primary/20 rounded-2xl p-3 md:p-4 lg:p-5 shadow-lg">
               Kurasi kendaraan premium terinspeksi 150 titik dengan jaminan legalitas dokumen mutlak, riwayat servis bengkel resmi, dan garansi mesin komprehensif.
             </p>
+
+            {/* Mobile: Compact Pill mirroring top-right desktop placement */}
+            <span className="md:hidden text-[9px] font-extrabold uppercase tracking-wider text-foreground/90 backdrop-blur-xl bg-background/50 border border-primary/20 rounded-full px-2.5 py-1 shrink-0 shadow-sm">
+              Audit 150 Titik
+            </span>
           </div>
 
-          {/* Middle Content: Mixed Editorial Typography & Floating Stat Cards */}
-          <div className="relative z-10 px-6 sm:px-12 lg:px-16 py-2 grid lg:grid-cols-2 items-end gap-4 lg:gap-6">
+          {/* Middle Content: Mixed Editorial Typography & Floating Stat Cards (Desktop 2-Col / Balanced Composition) */}
+          <div className="relative z-10 px-4 sm:px-12 lg:px-16 py-2 grid lg:grid-cols-12 items-end gap-3 sm:gap-4 lg:gap-6 my-auto">
             {/* Left: Signature Mixed Typography Headline */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.2 }}
-              className="space-y-3 sm:space-y-4"
+              className="lg:col-span-6 xl:col-span-7 space-y-2 sm:space-y-3"
             >
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-[4rem] font-black tracking-tight leading-[0.95] text-foreground">
+              <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl xl:text-[4rem] font-black tracking-tight leading-[0.98] text-foreground">
                 Where <br />
                 <span className="tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary to-foreground/70">PASSION MEETS </span>
                 <span className="font-serif italic font-normal text-muted-foreground lowercase block sm:inline">distinction.</span>
               </h1>
 
-              <div className="flex items-center gap-4 pt-2">
-                <div className="flex -space-x-2 overflow-hidden">
-                  <span className="inline-block h-9 w-9 rounded-full ring-2 ring-black bg-zinc-800 text-[10px] font-bold flex items-center justify-center text-white/80">VIP</span>
-                  <span className="inline-block h-9 w-9 rounded-full ring-2 ring-black bg-primary text-[10px] font-bold flex items-center justify-center text-white">150+</span>
-                  <span className="inline-block h-9 w-9 rounded-full ring-2 ring-black bg-zinc-700 text-[10px] font-bold flex items-center justify-center text-white">100%</span>
+              <div className="flex items-center gap-3 pt-1">
+                <div className="flex -space-x-2 overflow-hidden shrink-0">
+                  <span className="inline-block h-7 w-7 sm:h-9 sm:w-9 rounded-full ring-2 ring-black bg-zinc-800 text-[9px] sm:text-[10px] font-bold flex items-center justify-center text-white/80">VIP</span>
+                  <span className="inline-block h-7 w-7 sm:h-9 sm:w-9 rounded-full ring-2 ring-black bg-primary text-[9px] sm:text-[10px] font-bold flex items-center justify-center text-white">150+</span>
+                  <span className="inline-block h-7 w-7 sm:h-9 sm:w-9 rounded-full ring-2 ring-black bg-zinc-700 text-[9px] sm:text-[10px] font-bold flex items-center justify-center text-white">100%</span>
                 </div>
-                <div className="text-xs text-white/70">
+                <div className="text-[10px] sm:text-xs text-white/70">
                   <strong className="text-white font-bold">{displayCars.length}+ Unit Siap Kirim</strong> dengan sertifikasi Grade A
                 </div>
               </div>
             </motion.div>
 
-            {/* Right: Floating Glassmorphism Stat Cards */}
+            {/* Right: 3 Stat Cards STRICTLY PRESERVED IN 1 HORIZONTAL ROW (grid-cols-3 on all screens) */}
             <motion.div 
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, delay: 0.4 }}
-              className="flex flex-col sm:flex-row flex-wrap gap-2 lg:gap-3 lg:items-end justify-end"
+              className="lg:col-span-6 xl:col-span-5 grid grid-cols-3 gap-1.5 sm:gap-2.5 lg:gap-3 w-full items-end"
             >
-              <div className="backdrop-blur-xl bg-background/50 border border-primary/20 rounded-2xl p-3 w-full sm:w-48 lg:w-44 shadow-[0_8px_30px_rgba(90,33,50,0.15)] transition-all hover:-translate-y-1 hover:border-primary/50 group">
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-2xl sm:text-3xl font-black text-foreground">{displayCars.length > 0 ? `${displayCars.length}+` : '40+'}</span>
-                  <span className="rounded-full bg-primary/20 text-primary px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider group-hover:bg-primary group-hover:text-primary-foreground transition-colors">Terkurasi</span>
+              <div className="backdrop-blur-xl bg-background/50 border border-primary/20 rounded-xl sm:rounded-2xl p-2 sm:p-2.5 lg:p-3 shadow-[0_8px_30px_rgba(90,33,50,0.15)] transition-all hover:-translate-y-0.5 hover:border-primary/50 group">
+                <div className="flex items-center justify-between gap-1">
+                  <span className="font-display text-lg sm:text-2xl lg:text-3xl font-black text-foreground">{displayCars.length > 0 ? `${displayCars.length}+` : '40+'}</span>
+                  <span className="rounded-full bg-primary/20 text-primary px-1.5 py-0.5 text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">Terkurasi</span>
                 </div>
-                <p className="mt-0.5 text-[10px] text-foreground/80 font-medium">Unit Stok Siap Kirim</p>
-                <p className="text-[9px] text-muted-foreground mt-0.5">Lulus Audit 150 Titik</p>
+                <p className="mt-0.5 text-[9px] sm:text-[10px] text-foreground/80 font-medium truncate">Unit Stok Siap Kirim</p>
+                <p className="text-[8px] sm:text-[9px] text-muted-foreground mt-0.5 truncate hidden sm:block">Lulus Audit 150 Titik</p>
               </div>
 
-              <div className="backdrop-blur-xl bg-background/50 border border-primary/20 rounded-2xl p-3 w-full sm:w-48 lg:w-44 shadow-[0_8px_30px_rgba(90,33,50,0.15)] transition-all hover:-translate-y-1 hover:border-primary/50 group">
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-2xl sm:text-3xl font-black text-foreground">150</span>
-                  <span className="rounded-full bg-primary/20 text-primary px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider group-hover:bg-primary group-hover:text-primary-foreground transition-colors">Garansi</span>
+              <div className="backdrop-blur-xl bg-background/50 border border-primary/20 rounded-xl sm:rounded-2xl p-2 sm:p-2.5 lg:p-3 shadow-[0_8px_30px_rgba(90,33,50,0.15)] transition-all hover:-translate-y-0.5 hover:border-primary/50 group">
+                <div className="flex items-center justify-between gap-1">
+                  <span className="font-display text-lg sm:text-2xl lg:text-3xl font-black text-foreground">150</span>
+                  <span className="rounded-full bg-primary/20 text-primary px-1.5 py-0.5 text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">Garansi</span>
                 </div>
-                <p className="mt-0.5 text-[10px] text-foreground/80 font-medium">Titik Inspeksi Resmi</p>
-                <p className="text-[9px] text-muted-foreground mt-0.5">Mesin & Transmisi 1 Thn</p>
+                <p className="mt-0.5 text-[9px] sm:text-[10px] text-foreground/80 font-medium truncate">Titik Inspeksi Resmi</p>
+                <p className="text-[8px] sm:text-[9px] text-muted-foreground mt-0.5 truncate hidden sm:block">Mesin & Transmisi 1 Thn</p>
               </div>
 
-              <div className="backdrop-blur-xl bg-background/50 border border-primary/20 rounded-2xl p-3 w-full sm:w-48 lg:w-44 shadow-[0_8px_30px_rgba(90,33,50,0.15)] transition-all hover:-translate-y-1 hover:border-primary/50 group">
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-2xl sm:text-3xl font-black text-foreground">100%</span>
-                  <span className="rounded-full bg-primary/20 text-primary px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider group-hover:bg-primary group-hover:text-primary-foreground transition-colors">Bebas Risiko</span>
+              <div className="backdrop-blur-xl bg-background/50 border border-primary/20 rounded-xl sm:rounded-2xl p-2 sm:p-2.5 lg:p-3 shadow-[0_8px_30px_rgba(90,33,50,0.15)] transition-all hover:-translate-y-0.5 hover:border-primary/50 group">
+                <div className="flex items-center justify-between gap-1">
+                  <span className="font-display text-lg sm:text-2xl lg:text-3xl font-black text-foreground">100%</span>
+                  <span className="rounded-full bg-primary/20 text-primary px-1.5 py-0.5 text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">Aman</span>
                 </div>
-                <p className="mt-0.5 text-[10px] text-foreground/80 font-medium">Bebas Banjir & Tabrakan</p>
-                <p className="text-[9px] text-muted-foreground mt-0.5">Jaminan 100% Buyback</p>
+                <p className="mt-0.5 text-[9px] sm:text-[10px] text-foreground/80 font-medium truncate">Bebas Risiko</p>
+                <p className="text-[8px] sm:text-[9px] text-muted-foreground mt-0.5 truncate hidden sm:block">Jaminan 100% Buyback</p>
               </div>
             </motion.div>
           </div>
@@ -252,23 +260,23 @@ function HomeContent() {
             <div className="relative flex items-center justify-center">
               <Link 
                 href="#koleksi" 
-                className="group inline-flex items-center gap-3 rounded-full bg-background/95 dark:bg-card/95 text-foreground backdrop-blur-2xl px-8 sm:px-10 py-4 text-xs sm:text-sm font-extrabold uppercase tracking-wider shadow-[0_12px_40px_rgba(0,0,0,0.5)] border border-border/80 transition-all duration-300 hover:scale-105 hover:border-primary/50 hover:shadow-primary/20"
+                className="group inline-flex items-center gap-2.5 sm:gap-3 rounded-full bg-background/95 dark:bg-card/95 text-foreground backdrop-blur-2xl px-6 sm:px-10 py-2.5 sm:py-4 text-[11px] sm:text-sm font-extrabold uppercase tracking-wider shadow-[0_12px_40px_rgba(0,0,0,0.5)] border border-border/80 transition-all duration-300 hover:scale-105 hover:border-primary/50 hover:shadow-primary/20"
               >
                 <span>Jelajahi Koleksi</span>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground group-hover:translate-x-1 transition-transform">
-                  <ArrowRight className="h-3.5 w-3.5" />
+                <span className="flex h-5 w-5 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-primary text-primary-foreground group-hover:translate-x-1 transition-transform">
+                  <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 </span>
               </Link>
             </div>
           </div>
         </section>
 
-        {/* 1.5. VIDEO HIGHLIGHT GRID (Auto-play Looping Videos, Outside Hero Canvas) */}
-        <section className="relative z-10 w-full pb-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+        {/* 1.5. VIDEO HIGHLIGHT GRID (Auto-play Looping Videos, STRICTLY PRESERVED 3-COLUMNS IN 1 ROW) */}
+        <section className="relative z-10 w-full pb-2 sm:pb-4">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
             
             {/* Video Card 1 */}
-            <div className="group relative rounded-3xl overflow-hidden aspect-video md:aspect-auto md:h-[200px] lg:h-[220px] xl:h-[240px] bg-muted shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-border/50">
+            <div className="group relative rounded-2xl sm:rounded-3xl overflow-hidden h-[130px] sm:h-[180px] md:h-[200px] lg:h-[220px] xl:h-[240px] bg-muted shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1.5 border border-border/50">
               <video 
                 src="/videos/video-performa.mp4"
                 poster="/videos/thumb-performa.jpg"
@@ -288,26 +296,26 @@ function HomeContent() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-90 pointer-events-none" />
               
-              <div className="relative z-10 p-5 flex flex-col justify-between h-full pointer-events-none">
+              <div className="relative z-10 p-2.5 sm:p-5 flex flex-col justify-between h-full pointer-events-none">
                 <div className="flex justify-between items-start pointer-events-auto">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white text-black px-2.5 py-1 text-[9px] font-bold shadow-lg">
-                    <span className="flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" /> View video
+                  <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-white text-black px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[7px] sm:text-[9px] font-bold shadow-lg">
+                    <span className="flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" /> Video
                   </span>
-                  <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black shadow-lg hover:scale-110 transition-transform">
-                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  <button className="flex h-5 w-5 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white text-black shadow-lg hover:scale-110 transition-transform">
+                    <ArrowUpRight className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" />
                   </button>
                 </div>
                 
                 <div>
-                  <h3 className="font-display text-lg sm:text-xl font-black text-white drop-shadow-md leading-tight">
-                    Performa <br/>Maksimal.
+                  <h3 className="font-display text-[11px] sm:text-lg font-black text-white drop-shadow-md leading-tight">
+                    Performa <span className="hidden sm:inline"><br/></span>Maksimal.
                   </h3>
                 </div>
               </div>
             </div>
 
             {/* Video Card 2 */}
-            <div className="group relative rounded-3xl overflow-hidden aspect-video md:aspect-auto md:h-[200px] lg:h-[220px] xl:h-[240px] bg-muted shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-border/50">
+            <div className="group relative rounded-2xl sm:rounded-3xl overflow-hidden h-[130px] sm:h-[180px] md:h-[200px] lg:h-[220px] xl:h-[240px] bg-muted shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1.5 border border-border/50">
               <video 
                 src="/videos/video-white-car.mp4"
                 poster="/videos/thumb-kemewahan.jpg"
@@ -327,26 +335,26 @@ function HomeContent() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-90 pointer-events-none" />
               
-              <div className="relative z-10 p-5 flex flex-col justify-between h-full pointer-events-none">
+              <div className="relative z-10 p-2.5 sm:p-5 flex flex-col justify-between h-full pointer-events-none">
                 <div className="flex justify-between items-start pointer-events-auto">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white text-black px-2.5 py-1 text-[9px] font-bold shadow-lg">
-                    <span className="flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" /> View video
+                  <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-white text-black px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[7px] sm:text-[9px] font-bold shadow-lg">
+                    <span className="flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" /> Video
                   </span>
-                  <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black shadow-lg hover:scale-110 transition-transform">
-                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  <button className="flex h-5 w-5 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white text-black shadow-lg hover:scale-110 transition-transform">
+                    <ArrowUpRight className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" />
                   </button>
                 </div>
                 
                 <div>
-                  <h3 className="font-display text-lg sm:text-xl font-black text-white drop-shadow-md leading-tight">
-                    Kemewahan <br/>Eksklusif.
+                  <h3 className="font-display text-[11px] sm:text-lg font-black text-white drop-shadow-md leading-tight">
+                    Kemewahan <span className="hidden sm:inline"><br/></span>Eksklusif.
                   </h3>
                 </div>
               </div>
             </div>
 
             {/* Video Card 3 - Lead Gen */}
-            <div className="group relative rounded-3xl overflow-hidden aspect-video md:aspect-auto md:h-[200px] lg:h-[220px] xl:h-[240px] bg-muted shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-border/50">
+            <div className="group relative rounded-2xl sm:rounded-3xl overflow-hidden h-[130px] sm:h-[180px] md:h-[200px] lg:h-[220px] xl:h-[240px] bg-muted shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1.5 border border-border/50">
               <video 
                 src="/videos/video-macro-car.mp4"
                 poster="/videos/thumb-cockpit.jpg"
@@ -366,21 +374,22 @@ function HomeContent() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent opacity-90 pointer-events-none" />
               
-              <div className="relative z-10 p-5 flex flex-col justify-between h-full">
+              <div className="relative z-10 p-2.5 sm:p-5 flex flex-col justify-between h-full">
                 <div className="flex justify-between items-start">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white text-black px-2.5 py-1 text-[9px] font-bold shadow-lg">
-                    <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> Join VIP
+                  <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-white text-black px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[7px] sm:text-[9px] font-bold shadow-lg">
+                    <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> VIP
                   </span>
-                  <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black shadow-lg hover:scale-110 transition-transform">
-                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  <button className="flex h-5 w-5 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white text-black shadow-lg hover:scale-110 transition-transform">
+                    <ArrowUpRight className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" />
                   </button>
                 </div>
                 
                 <div className="w-full">
-                  <h3 className="font-display text-base sm:text-lg font-black text-white drop-shadow-md mb-2 leading-tight truncate">
-                    Dapatkan Penawaran!
+                  <h3 className="font-display text-[11px] sm:text-base font-black text-white drop-shadow-md mb-1 leading-tight truncate">
+                    Penawaran VIP
                   </h3>
-                  <div className="relative">
+                  {/* Desktop input */}
+                  <div className="relative hidden sm:block">
                     <input 
                       type="email" 
                       placeholder="Email Anda..." 
@@ -390,12 +399,20 @@ function HomeContent() {
                       Sub
                     </button>
                   </div>
+                  {/* Mobile compact button */}
+                  <Link 
+                    href={`/${currentCabang}/kontak`}
+                    className="sm:hidden block w-full text-center rounded-full bg-white text-black py-0.5 text-[8px] font-bold uppercase tracking-wider hover:bg-primary hover:text-white transition-colors"
+                  >
+                    Klaim
+                  </Link>
                 </div>
               </div>
             </div>
 
           </div>
         </section>
+
 
 
 
@@ -425,89 +442,90 @@ function HomeContent() {
                 Setiap kendaraan dalam etalase atelier DENKEN dipersiapkan selayaknya sebuah mahakarya. Dari audit struktur sasis independen hingga kalibrasi komputerisasi ECU dan verifikasi riwayat servis resmi, kami menjamin integritas kemewahan tanpa kompromi.
               </p>
 
-              {/* 4 Luxury Spec Badges */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm p-3.5 text-center transition-all hover:border-primary/40 shadow-sm">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground block">Tenaga</span>
-                  <span className="font-display text-lg font-black text-foreground">
+              {/* 4 Luxury Spec Badges (Strictly 4 Columns on all screens) */}
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-3 pt-2">
+                <div className="rounded-xl sm:rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm p-2 sm:p-3.5 text-center transition-all hover:border-primary/40 shadow-sm">
+                  <span className="text-[8px] sm:text-[10px] uppercase font-bold text-muted-foreground block truncate">Tenaga</span>
+                  <span className="font-display text-xs sm:text-lg font-black text-foreground block">
                     {selectedFlagship === 'porsche' ? '502 HP' : '523 HP'}
                   </span>
-                  <span className="text-[9px] text-muted-foreground block">
-                    {selectedFlagship === 'porsche' ? 'Flat-6 Twin-Turbo' : 'V8 Biturbo'}
+                  <span className="text-[7px] sm:text-[9px] text-muted-foreground truncate hidden sm:block">
+                    {selectedFlagship === 'porsche' ? 'Flat-6 TT' : 'V8 Biturbo'}
                   </span>
                 </div>
 
-                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm p-3.5 text-center transition-all hover:border-primary/40 shadow-sm">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground block">Akselerasi</span>
-                  <span className="font-display text-lg font-black text-foreground">
+                <div className="rounded-xl sm:rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm p-2 sm:p-3.5 text-center transition-all hover:border-primary/40 shadow-sm">
+                  <span className="text-[8px] sm:text-[10px] uppercase font-bold text-muted-foreground block truncate">Akselerasi</span>
+                  <span className="font-display text-xs sm:text-lg font-black text-foreground block">
                     {selectedFlagship === 'porsche' ? '3.4s' : '3.2s'}
                   </span>
-                  <span className="text-[9px] text-muted-foreground block">0-100 km/h</span>
+                  <span className="text-[7px] sm:text-[9px] text-muted-foreground truncate hidden sm:block">0-100 km/h</span>
                 </div>
 
-                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm p-3.5 text-center transition-all hover:border-primary/40 shadow-sm">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground block">Inspeksi</span>
-                  <span className="font-display text-lg font-black text-emerald-600 dark:text-emerald-400">100%</span>
-                  <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold block">Grade A+ Certified</span>
+                <div className="rounded-xl sm:rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm p-2 sm:p-3.5 text-center transition-all hover:border-primary/40 shadow-sm">
+                  <span className="text-[8px] sm:text-[10px] uppercase font-bold text-muted-foreground block truncate">Inspeksi</span>
+                  <span className="font-display text-xs sm:text-lg font-black text-emerald-600 dark:text-emerald-400 block">100%</span>
+                  <span className="text-[7px] sm:text-[9px] text-emerald-600 dark:text-emerald-400 font-bold truncate hidden sm:block">Grade A+</span>
                 </div>
 
-                <div className="rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm p-3.5 text-center transition-all hover:border-primary/40 shadow-sm">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground block">Garansi</span>
-                  <span className="font-display text-lg font-black text-primary">1 Tahun</span>
-                  <span className="text-[9px] text-muted-foreground block">Mesin & Transmisi</span>
+                <div className="rounded-xl sm:rounded-2xl border border-border/70 bg-card/60 backdrop-blur-sm p-2 sm:p-3.5 text-center transition-all hover:border-primary/40 shadow-sm">
+                  <span className="text-[8px] sm:text-[10px] uppercase font-bold text-muted-foreground block truncate">Garansi</span>
+                  <span className="font-display text-xs sm:text-lg font-black text-primary block">1 Thn</span>
+                  <span className="text-[7px] sm:text-[9px] text-muted-foreground truncate hidden sm:block">Mesin & Trans</span>
                 </div>
               </div>
 
-              {/* Dual Pricing Breakdown */}
-              <div className="pt-4 border-t border-border/60 flex flex-wrap items-baseline justify-between gap-4">
+              {/* Dual Pricing Breakdown (Preserves Side-by-Side on Mobile) */}
+              <div className="pt-3 sm:pt-4 border-t border-border/60 flex items-baseline justify-between gap-2">
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary block">
-                    Paket Kredit Spesial OTR
+                  <span className="text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider text-primary block">
+                    Paket Kredit Spesial
                   </span>
-                  <span className="font-display text-2xl sm:text-3xl font-black text-foreground">
+                  <span className="font-display text-lg sm:text-2xl lg:text-3xl font-black text-foreground leading-tight">
                     {selectedFlagship === 'porsche' ? 'Rp 2.850.000.000' : 'Rp 3.100.000.000'}
                   </span>
-                  <span className="text-xs text-muted-foreground block mt-0.5">
-                    TDP mulai {selectedFlagship === 'porsche' ? 'Rp 550 Jt' : 'Rp 620 Jt'} • Angsuran Fleksibel 1-5 Tahun
+                  <span className="text-[8px] sm:text-xs text-muted-foreground block mt-0.5">
+                    TDP {selectedFlagship === 'porsche' ? 'Rp 550 Jt' : 'Rp 620 Jt'} • Tenor 1-5 Thn
                   </span>
                 </div>
 
-                <div className="text-left sm:text-right">
-                  <span className="text-[10px] font-medium text-muted-foreground block">
-                    Harga Cash OTR
+                <div className="text-right shrink-0">
+                  <span className="text-[8px] sm:text-[10px] font-medium text-muted-foreground block">
+                    Cash OTR
                   </span>
-                  <span className="font-display text-lg font-bold text-muted-foreground">
+                  <span className="font-display text-xs sm:text-lg font-bold text-muted-foreground">
                     {selectedFlagship === 'porsche' ? 'Rp 2.990.000.000' : 'Rp 3.250.000.000'}
                   </span>
-                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold block">
-                    {selectedFlagship === 'porsche' ? 'Plat B Genap • Pajak Hidup' : 'Plat B Ganjil • Pajak Panjang'}
+                  <span className="text-[8px] sm:text-[10px] text-emerald-600 dark:text-emerald-400 font-bold block">
+                    {selectedFlagship === 'porsche' ? 'Plat Genap' : 'Plat Ganjil'}
                   </span>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex items-center gap-2 sm:gap-3 pt-1 sm:pt-2 flex-wrap sm:flex-nowrap">
                 <button
                   onClick={() => setSelectedBookingCar(spotlightCar)}
-                  className="rounded-full bg-primary px-8 py-4 text-xs font-black uppercase tracking-wider text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-105"
+                  className="flex-1 sm:flex-initial rounded-full bg-primary px-4 sm:px-8 py-2.5 sm:py-4 text-[11px] sm:text-xs font-black uppercase tracking-wider text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-105 whitespace-nowrap text-center"
                 >
-                  Kunci Unit Ini (Rp 10 Jt)
+                  Kunci Unit (Rp 10 Jt)
                 </button>
 
                 <button
                   onClick={() => setSelectedTestDriveCar(spotlightCar)}
-                  className="inline-flex items-center gap-2 rounded-full border border-border bg-background hover:bg-muted px-7 py-4 text-xs font-extrabold uppercase tracking-wider transition-all"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-full border border-border bg-background hover:bg-muted px-4 sm:px-7 py-2.5 sm:py-4 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all whitespace-nowrap text-center"
                 >
-                  <span>Jadwalkan VIP Test Drive</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <span>VIP Test Drive</span>
+                  <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 </button>
 
-                <Link
-                  href={spotlightCar ? `/${currentCabang}/mobil/${spotlightCar.slug}` : `/${currentCabang}/mobil`}
-                  className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors py-2 px-3"
+                <button
+                  type="button"
+                  onClick={() => setSelectedAuditCar(spotlightCar)}
+                  className="hidden sm:inline-block text-xs font-bold text-muted-foreground hover:text-primary transition-colors py-2 px-3 underline decoration-dotted whitespace-nowrap"
                 >
-                  Lihat Lembar Audit →
-                </Link>
+                  Lembar Audit →
+                </button>
               </div>
             </div>
 
@@ -524,9 +542,13 @@ function HomeContent() {
                 transition={{ duration: 0.8 }}
                 className="self-end mb-4 z-20"
               >
-                <div className="backdrop-blur-xl bg-background/80 dark:bg-card/80 border border-border/80 rounded-full px-4 py-1.5 shadow-lg flex items-center gap-2 text-xs font-extrabold text-foreground">
+                <div 
+                  onClick={() => setSelectedAuditCar(spotlightCar)}
+                  className="backdrop-blur-xl bg-background/80 dark:bg-card/80 border border-border/80 rounded-full px-4 py-1.5 shadow-lg flex items-center gap-2 text-xs font-extrabold text-foreground cursor-pointer hover:scale-105 hover:border-emerald-500/60 transition-all"
+                  title="Klik untuk membuka Lembar Audit Digital 150 Titik"
+                >
                   <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>150-Point Grade A+ Certified</span>
+                  <span>150-Point Grade A+ Certified (Cek Audit)</span>
                 </div>
               </motion.div>
 
@@ -628,9 +650,12 @@ function HomeContent() {
         {/* 4. SECTION 3: ASYMMETRICAL BENTO GRID ("Built with Precision") */}
         <section className="space-y-10">
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <span className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-primary block">
-              The Benchmark of Quality
-            </span>
+            <div className="inline-flex items-center gap-2.5">
+              <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+                The Benchmark of Quality
+              </span>
+            </div>
             <h2 className="font-display text-3xl sm:text-5xl font-black tracking-tight">
               Built with <span className="font-serif italic font-normal text-muted-foreground">Precision.</span>
             </h2>
@@ -639,252 +664,254 @@ function HomeContent() {
             </p>
           </div>
 
-          {/* Asymmetrical Bento Grid: 1 Tall Card Left + 2x2 Squircle Cards Right */}
-          {/* Asymmetrical Bento Grid: 1 Tall Card Left + 2x2 Squircle Cards Right */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          {/* Asymmetrical Bento Grid: 1 Tall Card Left + 2x2 Squircle Cards Right (Preserved on all screens) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
             
             {/* LEFT TALL SPOTLIGHT CARD (Spans 5 cols on lg) - Reversed Red Luxury Theme */}
-            <div className="lg:col-span-5 rounded-[2.5rem] border border-[#782D43]/50 bg-gradient-to-br from-[#5A2132] via-[#4A1826] to-[#2E0C16] text-white p-8 sm:p-10 flex flex-col justify-between shadow-[0_25px_60px_-15px_rgba(90,33,50,0.55)] relative overflow-hidden group">
+            <div className="lg:col-span-5 rounded-2xl sm:rounded-[2.5rem] border border-[#782D43]/50 bg-gradient-to-br from-[#5A2132] via-[#4A1826] to-[#2E0C16] text-white p-4 sm:p-8 lg:p-10 flex flex-col justify-between shadow-[0_25px_60px_-15px_rgba(90,33,50,0.55)] relative overflow-hidden group">
               {/* Atmospheric subtle radial glow */}
               <div className="absolute -right-20 -top-20 w-64 h-64 bg-rose-500/15 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-black/40 rounded-full blur-3xl pointer-events-none" />
 
-              <div className="space-y-6 relative z-10">
+              <div className="space-y-4 sm:space-y-6 relative z-10">
                 <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-white/15 text-white px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-widest border border-white/20 backdrop-blur-md">
-                    150-Point Audit
-                  </span>
-                  <ShieldCheck className="h-6 w-6 text-rose-200" />
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-1.5 w-1.5 rounded-full bg-rose-300 animate-pulse" />
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.28em] text-rose-100">
+                      150-Point Audit
+                    </span>
+                  </div>
+                  <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6 text-rose-200" />
                 </div>
 
                 <div>
-                  <h3 className="font-display text-2xl sm:text-3xl font-black tracking-tight text-white">
+                  <h3 className="font-display text-xl sm:text-3xl font-black tracking-tight text-white leading-tight">
                     Sertifikasi Inspeksi <br />
                     <span className="font-serif italic font-normal text-rose-200/90">Digital Independen.</span>
                   </h3>
-                  <p className="mt-3 text-xs sm:text-sm text-rose-100/80 leading-relaxed font-normal">
+                  <p className="mt-2 sm:mt-3 text-[11px] sm:text-sm text-rose-100/80 leading-relaxed font-normal">
                     Setiap unit melalui pemindaian komputerisasi ECU, pengujian kompresi mesin, verifikasi ketebalan cat panel sasis, dan audit riwayat bengkel resmi.
                   </p>
                 </div>
 
-                <div className="space-y-3 pt-2">
-                  <div className="flex items-center gap-3 text-xs font-semibold text-white/95">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                <div className="space-y-2 sm:space-y-3 pt-1 sm:pt-2">
+                  <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-white/95">
+                    <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
                     <span>Garansi 100% Bebas Rendaman Banjir</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs font-semibold text-white/95">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                    <span>Garansi Bebas Kerusakan Struktur Rangka / Tabrakan</span>
+                  <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-white/95">
+                    <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
+                    <span>Garansi Bebas Kerusakan Struktur Rangka</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs font-semibold text-white/95">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-white/95">
+                    <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
                     <span>Odometer Asli Terverifikasi Buku Servis</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs font-semibold text-white/95">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-white/95">
+                    <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
                     <span>Garansi Mesin & Transmisi 1 Tahun Penuh</span>
                   </div>
                 </div>
               </div>
 
               {/* Bottom Visual & Action */}
-              <div className="pt-8 relative z-10">
-                <div className="rounded-2xl overflow-hidden aspect-[16/9] border border-white/20 mb-6 relative shadow-lg">
+              <div className="pt-4 sm:pt-8 relative z-10">
+                <div className="rounded-xl sm:rounded-2xl overflow-hidden aspect-[16/8] sm:aspect-[16/9] border border-white/20 mb-3 sm:mb-6 relative shadow-lg">
                   <img 
                     src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1000&q=80" 
                     alt="Engine Inspection" 
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-95"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <span className="absolute bottom-3 left-4 text-[10px] font-bold text-white uppercase tracking-wider">
+                  <span className="absolute bottom-2 left-3 text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider">
                     Sertifikasi Resmi Multi-Point Check
                   </span>
                 </div>
 
                 <Link
                   href={`/${currentCabang}/tentang-kami`}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-white text-[#5A2132] hover:bg-rose-50 py-3.5 text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-xl hover:scale-[1.01]"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl bg-white text-[#5A2132] hover:bg-rose-50 py-2.5 sm:py-3.5 text-[11px] sm:text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-xl hover:scale-[1.01]"
                 >
                   Pelajari Standar Inspeksi Kami →
                 </Link>
               </div>
             </div>
 
-            {/* RIGHT 2x2 SQUIRCLE CARDS (Spans 7 cols on lg) */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* RIGHT 2x2 SQUIRCLE CARDS (Strictly 2 Columns on Mobile/Tablet/Desktop) */}
+            <div className="lg:col-span-7 grid grid-cols-2 gap-2.5 sm:gap-6">
               
               {/* Card 1: Smart Trade-In Suite */}
-              <div className="rounded-[2.2rem] border border-border/70 bg-card p-6 sm:p-7 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/40 group">
-                <div className="space-y-4">
+              <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card p-3 sm:p-7 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/40 group">
+                <div className="space-y-2 sm:space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <GitCompareArrows className="h-5 w-5" />
+                    <div className="h-8 w-8 sm:h-11 sm:w-11 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <GitCompareArrows className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary">
-                      Instant Net Diff
+                    <span className="text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider sm:tracking-widest text-primary">
+                      Instant Diff
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-display text-xl font-bold text-foreground">
-                      Smart Trade-In Suite
+                    <h4 className="font-display text-xs sm:text-xl font-bold text-foreground leading-tight">
+                      Smart Trade-In
                     </h4>
-                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                      Kalkulasi selisih nilai mobil lama ke mobil baru secara transparan dalam 3 langkah instan dengan simulasi sisa kredit.
+                    <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
+                      Kalkulasi selisih nilai mobil lama ke mobil baru secara transparan dalam 3 langkah.
                     </p>
                   </div>
 
                   {/* Relevant Visual */}
-                  <div className="rounded-2xl overflow-hidden aspect-[16/9] border border-border/70 relative shadow-sm">
+                  <div className="rounded-xl sm:rounded-2xl overflow-hidden aspect-[16/9] border border-border/70 relative shadow-sm">
                     <img 
                       src="/services/trade-in.jpg" 
                       alt="Smart Trade-In Suite" 
                       className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-                    <span className="absolute bottom-2.5 left-3 text-[10px] font-bold text-white uppercase tracking-wider">
-                      Penaksiran Obyektif & Transparan
+                    <span className="absolute bottom-1.5 left-2 sm:bottom-2.5 sm:left-3 text-[8px] sm:text-[10px] font-bold text-white uppercase tracking-wider truncate">
+                      Penaksiran Obyektif
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-4">
+                <div className="pt-2 sm:pt-4">
                   <Link
                     href={`/${currentCabang}/trade-in`}
-                    className="inline-flex items-center gap-2 text-xs font-bold text-primary group-hover:text-primary/80 transition-colors"
+                    className="inline-flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-bold text-primary group-hover:text-primary/80 transition-colors"
                   >
-                    Hitung Selisih Sekarang <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    Hitung Selisih <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
               </div>
 
               {/* Card 2: VIP Doorstep Concierge Test Drive */}
-              <div className="rounded-[2.2rem] border border-border/70 bg-card p-6 sm:p-7 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/40 group">
-                <div className="space-y-4">
+              <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card p-3 sm:p-7 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/40 group">
+                <div className="space-y-2 sm:space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <CarIcon className="h-5 w-5" />
+                    <div className="h-8 w-8 sm:h-11 sm:w-11 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <CarIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
-                      Doorstep Service
+                    <span className="text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider sm:tracking-widest text-emerald-600 dark:text-emerald-400">
+                      Doorstep
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-display text-xl font-bold text-foreground">
-                      VIP Test Drive Di Rumah
+                    <h4 className="font-display text-xs sm:text-xl font-bold text-foreground leading-tight">
+                      VIP Test Drive
                     </h4>
-                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                      Kesibukan Anda adalah prioritas. Kami kirimkan unit idaman langsung ke kediaman atau kantor Anda beserta tim concierge berpengalaman.
+                    <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
+                      Unit idaman diantar langsung ke kediaman atau kantor Anda dengan aman.
                     </p>
                   </div>
 
                   {/* Relevant Visual */}
-                  <div className="rounded-2xl overflow-hidden aspect-[16/9] border border-border/70 relative shadow-sm">
+                  <div className="rounded-xl sm:rounded-2xl overflow-hidden aspect-[16/9] border border-border/70 relative shadow-sm">
                     <img 
                       src="/services/test-drive.jpg" 
                       alt="VIP Test Drive Di Rumah" 
                       className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-                    <span className="absolute bottom-2.5 left-3 text-[10px] font-bold text-white uppercase tracking-wider">
-                      Unit Diantar Langsung Ke Kediaman
+                    <span className="absolute bottom-1.5 left-2 sm:bottom-2.5 sm:left-3 text-[8px] sm:text-[10px] font-bold text-white uppercase tracking-wider truncate">
+                      Diantar Ke Rumah
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-4">
+                <div className="pt-2 sm:pt-4">
                   <button
                     onClick={() => setSelectedTestDriveCar(spotlightCar)}
-                    className="inline-flex items-center gap-2 text-xs font-bold text-primary group-hover:text-primary/80 transition-colors"
+                    className="inline-flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-bold text-primary group-hover:text-primary/80 transition-colors"
                   >
-                    Jadwalkan Sesi VIP <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    Jadwalkan Sesi <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
               </div>
 
               {/* Card 3: Instant Unit Lock (Rp 10 Jt) */}
-              <div className="rounded-[2.2rem] border border-border/70 bg-card p-6 sm:p-7 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/40 group">
-                <div className="space-y-4">
+              <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card p-3 sm:p-7 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/40 group">
+                <div className="space-y-2 sm:space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Award className="h-5 w-5" />
+                    <div className="h-8 w-8 sm:h-11 sm:w-11 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Award className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">
-                      100% Refundable
+                    <span className="text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider sm:tracking-widest text-blue-600 dark:text-blue-400">
+                      Refundable
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-display text-xl font-bold text-foreground">
-                      Kunci Unit Online (Rp 10 Jt)
+                    <h4 className="font-display text-xs sm:text-xl font-bold text-foreground leading-tight">
+                      Kunci Unit Online
                     </h4>
-                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                      Amankan kepemilikan mobil selama 48 jam. Dana tanda jadi dikembalikan 100% bila unit tidak sesuai hasil inspeksi langsung Anda.
+                    <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
+                      Amankan unit 48 jam. Dana tanda jadi kembali 100% bila unit tidak sesuai.
                     </p>
                   </div>
 
                   {/* Relevant Visual */}
-                  <div className="rounded-2xl overflow-hidden aspect-[16/9] border border-border/70 relative shadow-sm">
+                  <div className="rounded-xl sm:rounded-2xl overflow-hidden aspect-[16/9] border border-border/70 relative shadow-sm">
                     <img 
                       src="/services/kunci-unit.jpg" 
                       alt="Kunci Unit Online" 
                       className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-                    <span className="absolute bottom-2.5 left-3 text-[10px] font-bold text-white uppercase tracking-wider">
-                      Hold Unit 48 Jam & Jaminan Dana
+                    <span className="absolute bottom-1.5 left-2 sm:bottom-2.5 sm:left-3 text-[8px] sm:text-[10px] font-bold text-white uppercase tracking-wider truncate">
+                      Jaminan 100% Refund
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-4">
+                <div className="pt-2 sm:pt-4">
                   <button
                     onClick={() => setSelectedBookingCar(spotlightCar)}
-                    className="inline-flex items-center gap-2 text-xs font-bold text-primary group-hover:text-primary/80 transition-colors"
+                    className="inline-flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-bold text-primary group-hover:text-primary/80 transition-colors"
                   >
-                    Kunci Unit Prioritas <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    Kunci Prioritas <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
               </div>
 
               {/* Card 4: Simulasi Kredit & Approval Instan */}
-              <div className="rounded-[2.2rem] border border-border/70 bg-card p-6 sm:p-7 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/40 group">
-                <div className="space-y-4">
+              <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card p-3 sm:p-7 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/40 group">
+                <div className="space-y-2 sm:space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Calculator className="h-5 w-5" />
+                    <div className="h-8 w-8 sm:h-11 sm:w-11 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Calculator className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-600 dark:text-amber-400">
-                      7+ Leasing Mitra
+                    <span className="text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider sm:tracking-widest text-amber-600 dark:text-amber-400">
+                      7+ Leasing
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-display text-xl font-bold text-foreground">
-                      Kredit Fleksibel & Cepat
+                    <h4 className="font-display text-xs sm:text-xl font-bold text-foreground leading-tight">
+                      Kredit Fleksibel
                     </h4>
-                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                      Bunga kompetitif mulai 2.6% p.a. bekerja sama dengan BCA Finance, Mandiri Tunas Finance, Maybank, dan leasing terkemuka lainnya.
+                    <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-none">
+                      Bunga kompetitif mulai 2.6% p.a. bekerja sama dengan leasing terkemuka.
                     </p>
                   </div>
 
                   {/* Relevant Visual */}
-                  <div className="rounded-2xl overflow-hidden aspect-[16/9] border border-border/70 relative shadow-sm">
+                  <div className="rounded-xl sm:rounded-2xl overflow-hidden aspect-[16/9] border border-border/70 relative shadow-sm">
                     <img 
                       src="/services/kredit-leasing.jpg" 
                       alt="Kredit Fleksibel & Cepat" 
                       className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-                    <span className="absolute bottom-2.5 left-3 text-[10px] font-bold text-white uppercase tracking-wider">
-                      Simulasi Ringan & Approval Cepat
+                    <span className="absolute bottom-1.5 left-2 sm:bottom-2.5 sm:left-3 text-[8px] sm:text-[10px] font-bold text-white uppercase tracking-wider truncate">
+                      Approval Cepat
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-4">
+                <div className="pt-2 sm:pt-4">
                   <Link
                     href={`/${currentCabang}/simulasi-kredit`}
-                    className="inline-flex items-center gap-2 text-xs font-bold text-primary group-hover:text-primary/80 transition-colors"
+                    className="inline-flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-bold text-primary group-hover:text-primary/80 transition-colors"
                   >
-                    Simulasikan Angsuran <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    Simulasi Angsuran <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
               </div>
@@ -956,21 +983,31 @@ function HomeContent() {
                 </button>
               </div>
 
-              {/* Mobile Filter Trigger */}
-              <button 
-                onClick={() => setIsMobileFilterOpen(true)} 
-                className="lg:hidden flex w-full sm:w-auto items-center justify-between gap-3 rounded-full border border-border bg-card/80 backdrop-blur-md px-6 py-3 text-xs font-bold shadow-sm"
-              >
-                <div className="flex items-center gap-2">
-                  <Search className="h-4 w-4 text-primary" />
-                  <span>Cari Unit & Filter Spesifik...</span>
-                </div>
-              </button>
+              {/* Mobile Filter Trigger + Lihat Semua Row */}
+              <div className="flex lg:hidden w-full items-center gap-2">
+                <button 
+                  onClick={() => setIsMobileFilterOpen(true)} 
+                  className="flex-1 flex items-center justify-between gap-2 rounded-full border border-border bg-card/80 backdrop-blur-md px-3.5 py-2 text-xs font-semibold shadow-sm"
+                >
+                  <div className="flex items-center gap-2 text-muted-foreground truncate">
+                    <Search className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                    <span className="truncate">Cari Model / Merk...</span>
+                  </div>
+                  <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full flex-shrink-0">Filter</span>
+                </button>
+                <Link 
+                  href={showroomParam ? `/${currentCabang}/mobil?showroom=${showroomParam}` : `/${currentCabang}/mobil`} 
+                  className="h-8 flex items-center justify-center gap-1.5 rounded-full bg-foreground text-background px-3 text-[10px] font-bold uppercase tracking-wider transition-all hover:bg-foreground/90 whitespace-nowrap shadow-sm flex-shrink-0"
+                >
+                  <span>Semua ({displayCars.length})</span>
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
 
-              {/* Lihat Semua Button */}
+              {/* Desktop Lihat Semua Button */}
               <Link 
                 href={showroomParam ? `/${currentCabang}/mobil?showroom=${showroomParam}` : `/${currentCabang}/mobil`} 
-                className="hidden sm:flex h-[42px] items-center justify-center gap-2 rounded-full bg-foreground text-background px-6 text-[10px] font-extrabold uppercase tracking-wider transition-all hover:bg-foreground/90 whitespace-nowrap shadow-md"
+                className="hidden lg:flex h-[42px] items-center justify-center gap-2 rounded-full bg-foreground text-background px-6 text-[10px] font-extrabold uppercase tracking-wider transition-all hover:bg-foreground/90 whitespace-nowrap shadow-md"
               >
                 <span>Semua ({displayCars.length})</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -980,15 +1017,15 @@ function HomeContent() {
           </div>
           
           {featuredCars.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7 auto-rows-[minmax(420px,auto)]">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5 lg:gap-7 auto-rows-[minmax(280px,auto)] sm:auto-rows-[minmax(420px,auto)]">
               {featuredCars.map((car, i) => {
                 // Bento Grid Logic:
-                // i = 0: Large Hero (2x2)
-                // i = 1, 2, 3, 4, 5: Regular (1x1)
-                let bentoClass = "lg:col-span-1 lg:row-span-1";
+                // i = 0: Large Hero (spans 2 cols on mobile and desktop)
+                // i = 1, 2, 3, 4, 5: Regular 1x1 (2 columns on mobile e-commerce style!)
+                let bentoClass = "col-span-1 lg:col-span-1 lg:row-span-1";
                 
                 if (i === 0) {
-                  bentoClass = "md:col-span-2 md:row-span-2 lg:col-span-2 lg:row-span-2";
+                  bentoClass = "col-span-2 md:col-span-2 md:row-span-2 lg:col-span-2 lg:row-span-2";
                 }
 
                 return (
@@ -1002,18 +1039,18 @@ function HomeContent() {
               })}
             </div>
           ) : (
-            <div className="rounded-[2.5rem] border border-dashed border-border/70 p-12 text-center bg-card/40 space-y-4">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <CarIcon className="h-8 w-8" />
+            <div className="rounded-2xl sm:rounded-[2.5rem] border border-dashed border-border/70 p-8 sm:p-12 text-center bg-card/40 space-y-4">
+              <div className="mx-auto flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <CarIcon className="h-7 w-7 sm:h-8 sm:w-8" />
               </div>
-              <h3 className="font-display text-2xl font-bold">Stok Showroom Masih Kosong</h3>
-              <p className="text-sm text-muted-foreground max-w-md mx-auto">
+              <h3 className="font-display text-xl sm:text-2xl font-bold">Stok Showroom Masih Kosong</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto">
                 Tambahkan mobil dari Portal Admin untuk menampilkan unit di etalase premium ini.
               </p>
               <Link
                 href="/admin"
                 target="_blank"
-                className="inline-flex rounded-full bg-primary px-8 py-3 text-xs font-bold text-primary-foreground shadow-lg hover:bg-primary/90 transition-all"
+                className="inline-flex rounded-full bg-primary px-6 sm:px-8 py-2.5 sm:py-3 text-xs font-bold text-primary-foreground shadow-lg hover:bg-primary/90 transition-all"
               >
                 + Masuk Ke Portal Admin & Upload Mobil
               </Link>
@@ -1022,28 +1059,28 @@ function HomeContent() {
         </section>
 
         {/* 6. SECTION 5: LUXURY TRUST PILLARS (Why Clients Choose DENKEN) */}
-        <section className="rounded-[2.5rem] sm:rounded-[3rem] bg-secondary/60 border border-border/70 p-8 sm:p-16 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-[11px] font-extrabold uppercase tracking-[0.25em] text-primary block">
+        <section className="rounded-2xl sm:rounded-[3rem] bg-secondary/60 border border-border/70 p-4 sm:p-12 lg:p-16 space-y-6 sm:space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-1.5 sm:space-y-3">
+            <span className="text-[9px] sm:text-[11px] font-extrabold uppercase tracking-[0.25em] text-primary block">
               The DENKEN Standard
             </span>
-            <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tight">
+            <h2 className="font-display text-xl sm:text-4xl font-black tracking-tight">
               Mengapa Klien Memilih <span className="font-serif italic font-normal text-muted-foreground">DENKEN MOTORS?</span>
             </h2>
           </div>
           
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6 lg:gap-8">
             {siteConfig.features?.map((feature) => {
               const IconComponent = ICON_MAP[feature.icon] || ShieldCheck
               return (
-                <div key={feature.id} className="rounded-[2rem] border border-border/50 bg-card/60 p-8 transition-all hover:bg-card hover:shadow-xl hover:border-primary/30 text-left space-y-4 group">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-transform group-hover:scale-110">
-                    <EditableIcon contentKey={`feature_icon_${feature.id}`} defaultIconId={feature.icon} className="h-7 w-7" />
+                <div key={feature.id} className="rounded-2xl sm:rounded-[2rem] border border-border/50 bg-card/60 p-3.5 sm:p-8 transition-all hover:bg-card hover:shadow-xl hover:border-primary/30 text-left space-y-2 sm:space-y-4 group">
+                  <div className="flex h-9 w-9 sm:h-14 sm:w-14 items-center justify-center rounded-xl sm:rounded-2xl bg-primary/10 text-primary transition-transform group-hover:scale-110">
+                    <EditableIcon contentKey={`feature_icon_${feature.id}`} defaultIconId={feature.icon} className="h-4 w-4 sm:h-7 sm:w-7" />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-foreground">
+                  <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">
                     <EditableText contentKey={`feature_title_${feature.id}`} defaultText={feature.title} />
                   </h3>
-                  <p className="text-xs leading-relaxed text-muted-foreground">
+                  <p className="text-[10px] sm:text-xs leading-relaxed text-muted-foreground line-clamp-3 sm:line-clamp-none">
                     <EditableText contentKey={`feature_desc_${feature.id}`} defaultText={feature.description} multiline />
                   </p>
                 </div>
@@ -1053,40 +1090,43 @@ function HomeContent() {
         </section>
 
         {/* 7. SECTION 6: CLIENT EDITORIAL REVIEWS & TESTIMONIALS */}
-        <section id="testimoni" className="space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border/60 pb-8">
+        <section id="testimoni" className="space-y-6 sm:space-y-10">
+          <div className="flex flex-row items-end justify-between gap-4 border-b border-border/60 pb-4 sm:pb-8">
             <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.25em] text-primary block mb-2">
-                Real Stories
-              </span>
-              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
+              <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-primary animate-pulse" />
+                <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.2em] sm:tracking-[0.28em] text-primary">
+                  Real Stories
+                </span>
+              </div>
+              <h2 className="font-display text-xl sm:text-3xl md:text-5xl font-black tracking-tight">
                 Pengalaman Klien <span className="font-serif italic font-normal text-muted-foreground">Terhormat Kami.</span>
               </h2>
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               <button
                 onClick={() => setShowReviewModal(true)}
-                className="flex items-center gap-2 rounded-full border border-primary bg-primary/10 px-5 py-3 text-xs font-extrabold uppercase tracking-wider text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+                className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-primary bg-primary/10 px-3 sm:px-5 py-2 sm:py-3 text-[10px] sm:text-xs font-extrabold uppercase tracking-wider text-primary transition-all hover:bg-primary hover:text-primary-foreground whitespace-nowrap"
               >
-                <MessageSquarePlus className="h-4 w-4" /> Tulis Ulasan
+                <MessageSquarePlus className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> <span className="hidden xs:inline">Tulis Ulasan</span><span className="xs:hidden">Ulas</span>
               </button>
               
               {branchTestimonials.length > 0 && (
-                <div className="flex gap-2">
+                <div className="flex gap-1.5 sm:gap-2">
                   <button 
                     aria-label="Testimoni sebelumnya" 
                     onClick={() => setSlide((slide + branchTestimonials.length - 1) % branchTestimonials.length)} 
-                    className="rounded-full border border-border p-3 transition-colors hover:bg-muted"
+                    className="rounded-full border border-border p-2 sm:p-3 transition-colors hover:bg-muted"
                   >
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </button>
                   <button 
                     aria-label="Testimoni berikutnya" 
                     onClick={() => setSlide((slide + 1) % branchTestimonials.length)} 
-                    className="rounded-full border border-border p-3 transition-colors hover:bg-muted"
+                    className="rounded-full border border-border p-2 sm:p-3 transition-colors hover:bg-muted"
                   >
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </button>
                 </div>
               )}
@@ -1101,36 +1141,36 @@ function HomeContent() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="rounded-[2.5rem] bg-card p-8 sm:p-14 border border-border/70 shadow-xl max-w-4xl"
+                className="rounded-2xl sm:rounded-[2.5rem] bg-card p-5 sm:p-14 border border-border/70 shadow-xl max-w-4xl space-y-4"
               >
-                <div className="mb-6 flex gap-1 text-primary">
+                <div className="flex gap-1 text-primary">
                   {[1,2,3,4,5].map(s => (
-                    <Star key={s} className={`h-4 w-4 ${s <= (branchTestimonials[slide]?.rating || 5) ? 'fill-current' : 'text-muted-foreground/30'}`} />
+                    <Star key={s} className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${s <= (branchTestimonials[slide]?.rating || 5) ? 'fill-current' : 'text-muted-foreground/30'}`} />
                   ))}
                 </div>
-                <blockquote className="font-serif italic text-2xl sm:text-3xl leading-relaxed text-foreground font-normal">
+                <blockquote className="font-serif italic text-base sm:text-2xl md:text-3xl leading-relaxed text-foreground font-normal">
                   “{branchTestimonials[slide]?.quote || 'Memuat ulasan...'}”
                 </blockquote>
-                <div className="mt-8 flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
+                <div className="pt-2 flex items-center gap-3 sm:gap-4">
+                  <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm sm:text-lg flex-shrink-0">
                     {branchTestimonials[slide]?.name.charAt(0) || 'P'}
                   </div>
                   <div>
-                    <p className="font-display font-bold text-base">{branchTestimonials[slide]?.name}</p>
-                    <p className="text-xs text-primary font-medium">Pembeli {branchTestimonials[slide]?.car}</p>
+                    <p className="font-display font-bold text-xs sm:text-base">{branchTestimonials[slide]?.name}</p>
+                    <p className="text-[10px] sm:text-xs text-primary font-medium">Pembeli {branchTestimonials[slide]?.car}</p>
                   </div>
                 </div>
               </motion.div>
             </div>
           ) : (
-            <div className="rounded-[2rem] border border-dashed border-border p-10 text-center bg-card/30">
-              <p className="text-muted-foreground text-sm font-medium">Belum ada ulasan untuk showroom ini.</p>
+            <div className="rounded-2xl sm:rounded-[2rem] border border-dashed border-border p-6 sm:p-10 text-center bg-card/30">
+              <p className="text-muted-foreground text-xs sm:text-sm font-medium">Belum ada ulasan untuk showroom ini.</p>
             </div>
           )}
         </section>
 
         {/* 8. SECTION 7: FINAL LUXURY EDITORIAL CTA BANNER */}
-        <section className="relative rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden bg-zinc-950 p-10 sm:p-20 text-white shadow-2xl border border-border/40">
+        <section className="relative rounded-2xl sm:rounded-[3rem] overflow-hidden bg-zinc-950 p-6 sm:p-14 lg:p-20 text-white shadow-2xl border border-border/40">
           <div className="absolute inset-0">
             <img 
               src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=2200&q=80" 
@@ -1140,28 +1180,28 @@ function HomeContent() {
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
           </div>
 
-          <div className="relative z-10 max-w-3xl mx-auto text-center space-y-6">
-            <span className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-primary block">
+          <div className="relative z-10 max-w-3xl mx-auto text-center space-y-4 sm:space-y-6">
+            <span className="text-[9px] sm:text-[11px] font-extrabold uppercase tracking-[0.25em] sm:tracking-[0.28em] text-primary block">
               Experience Perfection
             </span>
-            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.05]">
+            <h2 className="font-display text-2xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1]">
               Your Journey to <br />
               <span className="font-serif italic font-normal text-white/95">Distinction Begins Here.</span>
             </h2>
-            <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto leading-relaxed">
+            <p className="text-xs sm:text-base text-white/70 max-w-xl mx-auto leading-relaxed">
               Jadwalkan kunjungan privat ke galeri showroom kami atau konsultasikan kebutuhan tukar tambah Anda bersama spesialis otomotif DENKEN.
             </p>
 
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4">
               <Link
                 href={`/${currentCabang}/mobil`}
-                className="w-full sm:w-auto rounded-full bg-primary px-8 py-4 text-xs font-black uppercase tracking-wider text-primary-foreground shadow-xl transition-all hover:bg-primary/90 hover:scale-105"
+                className="w-full sm:w-auto rounded-full bg-primary px-6 sm:px-8 py-3 sm:py-4 text-[11px] sm:text-xs font-black uppercase tracking-wider text-primary-foreground shadow-xl transition-all hover:bg-primary/90 hover:scale-105 text-center"
               >
                 Jelajahi Semua Koleksi ({displayCars.length} Unit)
               </Link>
               <Link
                 href={`/${currentCabang}/kontak`}
-                className="w-full sm:w-auto rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-8 py-4 text-xs font-bold uppercase tracking-wider text-white transition-all hover:bg-white/20 hover:border-white/40 hover:scale-105"
+                className="w-full sm:w-auto rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-6 sm:px-8 py-3 sm:py-4 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white transition-all hover:bg-white/20 hover:border-white/40 hover:scale-105 text-center"
               >
                 Hubungi VIP Concierge →
               </Link>
@@ -1188,6 +1228,15 @@ function HomeContent() {
           onClose={() => setSelectedTestDriveCar(null)}
           car={selectedTestDriveCar}
           currentCabang={currentCabang}
+        />
+      )}
+
+      {/* MODAL 3: 150-POINT CERTIFIED INSPECTION AUDIT */}
+      {selectedAuditCar && (
+        <InspectionAuditModal
+          isOpen={!!selectedAuditCar}
+          onClose={() => setSelectedAuditCar(null)}
+          car={selectedAuditCar}
         />
       )}
 

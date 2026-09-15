@@ -14,20 +14,23 @@ export default function WishlistPage() {
   return (
     <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
       {/* Theme Responsive Header */}
-      <div className="bg-card border-b border-border/60 py-16 text-foreground relative overflow-hidden mb-12 shadow-sm">
+      <div className="bg-card border-b border-border/60 py-8 sm:py-16 text-foreground relative overflow-hidden mb-6 sm:mb-12 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <Heart className="h-7 w-7 fill-primary" />
+        <div className="relative mx-auto w-full max-w-[1536px] px-4 sm:px-10 lg:px-16 text-center">
+          <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
+            <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+              Saved Collection
+            </span>
           </div>
-          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight">Wishlist Mobil Impian</h1>
-          <p className="mt-4 text-muted-foreground max-w-xl mx-auto text-base">
+          <h1 className="font-display text-xl sm:text-5xl font-black tracking-tight">Wishlist Mobil Impian</h1>
+          <p className="mt-2 sm:mt-4 text-muted-foreground max-w-xl mx-auto text-[11px] sm:text-base">
             Koleksi mobil favorit yang telah Anda simpan. Konsultasikan atau segera ajukan pembiayaan.
           </p>
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16">
         {favoriteCars.length > 0 ? (
           <div>
             <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
@@ -36,7 +39,7 @@ export default function WishlistPage() {
               </p>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
               {favoriteCars.map((car, i) => (
                 <CarCard key={car.id} car={car} index={i} />
               ))}

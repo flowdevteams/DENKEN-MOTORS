@@ -38,22 +38,34 @@ import {
   TrendingUp,
   DollarSign,
   FileText,
-  AlertTriangle
+  AlertTriangle,
+  Building2,
+  BarChart3,
+  Receipt
 } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { Car } from '@/data/cars'
 import { loginAdmin, logoutAdmin, getAdminSession } from '@/app/actions/authActions'
 import { getCars, createCar, updateCar, deleteCar } from '@/app/actions/carActions'
 import { getLeads, updateLeadStatus, deleteLead } from '@/app/actions/leadActions'
+import { getBranches, createBranch, updateBranch, deleteBranch } from '@/app/actions/branchActions'
+import { getExpenses, createExpense, deleteExpense, getExpenseStats } from '@/app/actions/expenseActions'
+import { getTransactions, createTransaction, getTransactionStats } from '@/app/actions/transactionActions'
 import { KanbanLeads, KanbanLeadItem } from '@/components/admin/KanbanLeads'
 import { SpkModal } from '@/components/admin/SpkModal'
+import { BranchManagement } from '@/components/admin/BranchManagement'
+import { InventoryManager } from '@/components/admin/InventoryManager'
+import { ReportDashboard } from '@/components/admin/ReportDashboard'
+import { ExpenseTracker } from '@/components/admin/ExpenseTracker'
 
 const formatIDR = (n: number) => `Rp ${n.toLocaleString('id-ID')}`
+
+type AdminTab = 'overview' | 'kanban' | 'inventory' | 'branches' | 'reports' | 'expenses'
 
 export default function AdminDashboardPage() {
   const [isPending, startTransition] = useTransition()
   const [mounted, setMounted] = useState(false)
-  const [activeTab, setActiveTab] = useState<'overview' | 'kanban' | 'inventory' | 'branches'>('overview')
+  const [activeTab, setActiveTab] = useState<AdminTab>('overview')
 
   // Auth State (Server Session Driven)
   const [sessionUser, setSessionUser] = useState<any>(null)
@@ -65,6 +77,18 @@ export default function AdminDashboardPage() {
   // Real Database Records
   const [dbCars, setDbCars] = useState<Car[]>([])
   const [dbLeads, setDbLeads] = useState<KanbanLeadItem[]>([])
+  const [dbBranches, setDbBranches] = useState<any[]>([])
+  const [dbExpenses, setDbExpenses] = useState<any[]>([])
+  const [dbTransactions, setDbTransactions] = useState<any[]>([])
+  const [transactionStats, setTransactionStats] = useState<any>({
+    thisMonth: { revenue: 0, units: 0 },
+    lastMonth: { revenue: 0, units: 0 },
+    allTime: { revenue: 0, units: 0 },
+    monthlyBreakdown: [],
+  })
+  const [expenseStats, setExpenseStats] = useState<any>({
+    totalAll: 0, totalMonth: 0, countMonth: 0, byCategory: [],
+  })
   const [loadingData, setLoadingData] = useState(false)
 
   // Modals & SPK State
@@ -109,7 +133,7 @@ export default function AdminDashboardPage() {
 
   // Branches & Store Fallback
   const branches = useStore((state) => state.branches)
-  const currentBranch = branches[0] || { name: 'DENKEN Jakarta (Pusat)', city: 'Jakarta', address: 'Jl. TB Simatupang No. 88' }
+  const currentBranch = dbBranches[0] || branches[0] || { name: 'DENKEN Jakarta (Pusat)', city: 'Jakarta', address: 'Jl. TB Simatupang No. 88' }
 
   // 1. Check server session on mount
   useEffect(() => {
@@ -133,12 +157,23 @@ export default function AdminDashboardPage() {
   const loadFreshData = async () => {
     setLoadingData(true)
     try {
-      const [carsData, leadsData] = await Promise.all([
+      const ownerId = sessionUser?.userId || 'admin_owner_1'
+      const [carsData, leadsData, branchesData, expensesData, transData, txStats, expStats] = await Promise.all([
         getCars(),
-        getLeads(sessionUser?.userId || 'admin_owner_1')
+        getLeads(ownerId),
+        getBranches(ownerId),
+        getExpenses(ownerId),
+        getTransactions(ownerId),
+        getTransactionStats(ownerId),
+        getExpenseStats(ownerId),
       ])
       if (carsData) setDbCars(carsData as any)
       if (leadsData) setDbLeads(leadsData as any)
+      if (branchesData) setDbBranches(branchesData)
+      if (expensesData) setDbExpenses(expensesData)
+      if (transData) setDbTransactions(transData)
+      if (txStats) setTransactionStats(txStats)
+      if (expStats) setExpenseStats(expStats)
     } catch (err) {
       console.error('Failed to load fresh DB data:', err)
     } finally {
@@ -174,17 +209,15 @@ export default function AdminDashboardPage() {
 
   // Handle Lead Status Change (Kanban)
   const handleLeadStatusChange = async (id: string, newStatus: any, assignedTo?: string, notes?: string) => {
-    // Optimistic update
     setDbLeads((prev) =>
       prev.map((l) => (l.id === id ? { ...l, status: newStatus, assignedTo: assignedTo || l.assignedTo, notes: notes || l.notes } : l))
     )
     await updateLeadStatus(id, newStatus, assignedTo, notes)
-    // Reload cars to reflect auto-lock status if SPK / Selesai
     const updatedCars = await getCars()
     if (updatedCars) setDbCars(updatedCars as any)
   }
 
-  // Open SPK from Kanban or Table
+  // Open SPK from Kanban
   const handleOpenSpk = (lead: any, car: any) => {
     setSpkLead(lead)
     setSpkCar(car)
@@ -196,19 +229,16 @@ export default function AdminDashboardPage() {
     e.preventDefault()
     startTransition(async () => {
       const slug = editingCar ? editingCar.slug : carForm.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now().toString().slice(-4)
-      
       const payload = {
         ...carForm,
         slug,
         ownerId: sessionUser?.userId || 'admin_owner_1',
       }
-
       if (editingCar) {
         await updateCar(editingCar.id, payload as any)
       } else {
         await createCar(payload as any)
       }
-
       setIsCarModalOpen(false)
       setEditingCar(null)
       loadFreshData()
@@ -256,6 +286,46 @@ export default function AdminDashboardPage() {
       await deleteCar(id)
       loadFreshData()
     }
+  }
+
+  // Branch CRUD handlers
+  const handleCreateBranch = async (data: any) => {
+    const ownerId = sessionUser?.userId || 'admin_owner_1'
+    await createBranch({ ...data, ownerId })
+    loadFreshData()
+  }
+
+  const handleUpdateBranch = async (id: string, data: any) => {
+    await updateBranch(id, data)
+    loadFreshData()
+  }
+
+  const handleDeleteBranch = async (id: string) => {
+    await deleteBranch(id)
+    loadFreshData()
+  }
+
+  // Inventory handlers
+  const handleAssignBranch = async (carId: string, branchId: string | null) => {
+    await updateCar(carId, { branchId: branchId || undefined } as any)
+    loadFreshData()
+  }
+
+  const handleToggleStatus = async (carId: string, badge: string, isSoldOut: boolean) => {
+    await updateCar(carId, { badge, isSoldOut } as any)
+    loadFreshData()
+  }
+
+  // Expense handlers
+  const handleCreateExpense = async (data: any) => {
+    const ownerId = sessionUser?.userId || 'admin_owner_1'
+    await createExpense({ ...data, ownerId })
+    loadFreshData()
+  }
+
+  const handleDeleteExpense = async (id: string) => {
+    await deleteExpense(id)
+    loadFreshData()
   }
 
   if (!mounted || authLoading) {
@@ -354,6 +424,15 @@ export default function AdminDashboardPage() {
     .reduce((sum, c) => sum + (c.price || 0), 0)
   const activeLeadsCount = dbLeads.filter((l) => l.status !== 'Selesai' && l.status !== 'Ditolak' && l.status !== 'Batal').length
 
+  const TABS: { id: AdminTab; label: string; icon: any; badge?: number }[] = [
+    { id: 'overview', label: 'Ringkasan Bisnis', icon: LayoutDashboard },
+    { id: 'kanban', label: 'Sales Pipeline CRM', icon: Users, badge: activeLeadsCount || undefined },
+    { id: 'inventory', label: 'Stok & Dual Pricing', icon: CarIcon, badge: readyStockCount },
+    { id: 'branches', label: 'Cabang Showroom', icon: Building2, badge: dbBranches.length },
+    { id: 'reports', label: 'Laporan & Analisis', icon: BarChart3 },
+    { id: 'expenses', label: 'Pengeluaran', icon: Receipt },
+  ]
+
   return (
     <div className="min-h-screen bg-secondary/30 pb-20">
       {/* Top Header Navigation */}
@@ -374,12 +453,19 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="flex items-center gap-2.5">
+            <button
+              onClick={loadFreshData}
+              disabled={loadingData}
+              className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-xs font-bold text-muted-foreground hover:text-foreground transition shadow-sm"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${loadingData ? 'animate-spin' : ''}`} /> Sync
+            </button>
             <Link
               href="/jakarta"
               target="_blank"
               className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-xs font-bold text-muted-foreground hover:text-foreground transition shadow-sm"
             >
-              <ExternalLink className="h-3.5 w-3.5" /> Lihat Website
+              <ExternalLink className="h-3.5 w-3.5" /> Website
             </Link>
             <button
               onClick={handleLogout}
@@ -391,45 +477,28 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Tab Navigation Menu */}
-        <div className="mx-auto max-w-7xl px-5 lg:px-8 flex gap-2 border-t border-border/40 overflow-x-auto">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition ${
-              activeTab === 'overview'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <LayoutDashboard className="h-4 w-4" /> Ringkasan Bisnis
-          </button>
-          <button
-            onClick={() => setActiveTab('kanban')}
-            className={`flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition ${
-              activeTab === 'kanban'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Users className="h-4 w-4" /> Sales Pipeline CRM
-            {activeLeadsCount > 0 && (
-              <span className="rounded-full bg-primary text-primary-foreground text-[10px] px-1.5 py-0.2 font-black">
-                {activeLeadsCount}
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab('inventory')}
-            className={`flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition ${
-              activeTab === 'inventory'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <CarIcon className="h-4 w-4" /> Stok & Dual Pricing
-            <span className="rounded-full bg-muted text-foreground text-[10px] px-1.5 py-0.2 font-bold">
-              {readyStockCount}
-            </span>
-          </button>
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 flex gap-1 border-t border-border/40 overflow-x-auto">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition whitespace-nowrap ${
+                activeTab === tab.id
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <tab.icon className="h-4 w-4" />
+              {tab.label}
+              {tab.badge !== undefined && tab.badge > 0 && (
+                <span className={`rounded-full text-[10px] px-1.5 py-0.5 font-black ${
+                  activeTab === tab.id ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
+                }`}>
+                  {tab.badge}
+                </span>
+              )}
+            </button>
+          ))}
         </div>
       </header>
 
@@ -475,13 +544,15 @@ export default function AdminDashboardPage() {
 
               <div className="rounded-2xl border border-border bg-card p-5 shadow-sm space-y-2">
                 <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="text-xs font-bold uppercase tracking-wider">Unit Terjual</span>
-                  <TrendingUp className="h-4 w-4 text-rose-500" />
+                  <span className="text-xs font-bold uppercase tracking-wider">Omzet Bulan Ini</span>
+                  <TrendingUp className="h-4 w-4 text-emerald-500" />
                 </div>
-                <p className="font-display text-2xl sm:text-3xl font-black text-foreground">
-                  {soldCount} <span className="text-sm font-normal text-muted-foreground">Unit</span>
+                <p className="font-display text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">
+                  {formatIDR(transactionStats.thisMonth?.revenue || 0)}
                 </p>
-                <p className="text-[11px] text-muted-foreground">Tercatat status SPK & Sold Out</p>
+                <p className="text-[11px] text-muted-foreground">
+                  {transactionStats.thisMonth?.units || 0} unit terjual bulan ini
+                </p>
               </div>
             </div>
 
@@ -530,30 +601,50 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              {/* Quick Pipeline Status Summary */}
-              <div className="rounded-3xl border border-border bg-card p-6 shadow-sm space-y-4">
-                <h2 className="font-display text-lg font-bold text-foreground">Alur Penjualan (CRM)</h2>
-                <div className="space-y-3 text-xs">
-                  <div className="flex justify-between items-center p-3 rounded-xl bg-muted/40">
-                    <span className="font-semibold text-foreground">Prospek Baru</span>
-                    <span className="font-bold text-blue-500">{dbLeads.filter(l => l.status === 'Baru').length} Leads</span>
+              {/* Quick Pipeline Status + Quick Links */}
+              <div className="space-y-5">
+                <div className="rounded-3xl border border-border bg-card p-6 shadow-sm space-y-4">
+                  <h2 className="font-display text-lg font-bold text-foreground">Alur Penjualan</h2>
+                  <div className="space-y-3 text-xs">
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-muted/40">
+                      <span className="font-semibold text-foreground">Prospek Baru</span>
+                      <span className="font-bold text-blue-500">{dbLeads.filter(l => l.status === 'Baru').length} Leads</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-muted/40">
+                      <span className="font-semibold text-foreground">Follow-Up & Test Drive</span>
+                      <span className="font-bold text-amber-500">{dbLeads.filter(l => l.status === 'FollowUp' || l.status === 'TestDrive').length} Leads</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-muted/40">
+                      <span className="font-semibold text-foreground">SPK & Booking Fee</span>
+                      <span className="font-bold text-emerald-500">{dbLeads.filter(l => l.status === 'SPK' || l.status === 'Disetujui').length} Deals</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center p-3 rounded-xl bg-muted/40">
-                    <span className="font-semibold text-foreground">Follow-Up & Test Drive</span>
-                    <span className="font-bold text-amber-500">{dbLeads.filter(l => l.status === 'FollowUp' || l.status === 'TestDrive').length} Leads</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 rounded-xl bg-muted/40">
-                    <span className="font-semibold text-foreground">SPK & Booking Fee</span>
-                    <span className="font-bold text-emerald-500">{dbLeads.filter(l => l.status === 'SPK' || l.status === 'Disetujui').length} Deals</span>
-                  </div>
+                  <button
+                    onClick={() => setActiveTab('kanban')}
+                    className="w-full rounded-xl bg-primary py-3 text-xs font-bold text-primary-foreground hover:bg-primary/90 transition shadow-sm"
+                  >
+                    Buka Kanban Pipeline
+                  </button>
                 </div>
 
-                <button
-                  onClick={() => setActiveTab('kanban')}
-                  className="w-full rounded-xl bg-primary py-3 text-xs font-bold text-primary-foreground hover:bg-primary/90 transition shadow-sm"
-                >
-                  Buka Kanban Pipeline
-                </button>
+                {/* Quick Navigation */}
+                <div className="rounded-3xl border border-border bg-card p-6 shadow-sm space-y-3">
+                  <h2 className="font-display text-base font-bold text-foreground">Aksi Cepat</h2>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button onClick={() => setActiveTab('branches')} className="flex items-center gap-2 p-3 rounded-xl bg-muted/30 hover:bg-muted/60 transition text-xs font-bold text-foreground">
+                      <Building2 className="h-4 w-4 text-primary" /> Cabang
+                    </button>
+                    <button onClick={() => setActiveTab('reports')} className="flex items-center gap-2 p-3 rounded-xl bg-muted/30 hover:bg-muted/60 transition text-xs font-bold text-foreground">
+                      <BarChart3 className="h-4 w-4 text-emerald-500" /> Laporan
+                    </button>
+                    <button onClick={() => setActiveTab('expenses')} className="flex items-center gap-2 p-3 rounded-xl bg-muted/30 hover:bg-muted/60 transition text-xs font-bold text-foreground">
+                      <Receipt className="h-4 w-4 text-amber-500" /> Pengeluaran
+                    </button>
+                    <button onClick={() => { setEditingCar(null); setIsCarModalOpen(true) }} className="flex items-center gap-2 p-3 rounded-xl bg-muted/30 hover:bg-muted/60 transition text-xs font-bold text-foreground">
+                      <Plus className="h-4 w-4 text-blue-500" /> + Mobil
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -587,127 +678,51 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* TAB 3: INVENTORY & DUAL PRICING */}
+        {/* TAB 3: INVENTORY (Enhanced) */}
         {activeTab === 'inventory' && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <h2 className="font-display text-xl font-bold text-foreground">Manajemen Stok Kendaraan</h2>
-                <p className="text-xs text-muted-foreground">
-                  Kelola Dual Pricing (Cash vs Paket Kredit), status pajak, nomor polisi, dan 150 titik inspeksi.
-                </p>
-              </div>
+          <InventoryManager
+            cars={dbCars}
+            branches={dbBranches}
+            onEditCar={handleEditCarClick}
+            onDeleteCar={handleDeleteCarClick}
+            onAddCar={() => { setEditingCar(null); setIsCarModalOpen(true) }}
+            onAssignBranch={handleAssignBranch}
+            onToggleStatus={handleToggleStatus}
+          />
+        )}
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    setEditingCar(null)
-                    setIsCarModalOpen(true)
-                  }}
-                  className="flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground hover:bg-primary/90 transition shadow-sm"
-                >
-                  <Plus className="h-4 w-4" /> Tambah Mobil Baru
-                </button>
-              </div>
-            </div>
+        {/* TAB 4: BRANCH MANAGEMENT */}
+        {activeTab === 'branches' && (
+          <BranchManagement
+            branches={dbBranches}
+            allCars={dbCars}
+            onCreateBranch={handleCreateBranch}
+            onUpdateBranch={handleUpdateBranch}
+            onDeleteBranch={handleDeleteBranch}
+          />
+        )}
 
-            {/* Inventory Table */}
-            <div className="rounded-3xl border border-border bg-card overflow-hidden shadow-sm">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="border-b border-border bg-muted/40 text-muted-foreground uppercase font-bold text-[10px]">
-                    <tr>
-                      <th className="p-4">Mobil</th>
-                      <th className="p-4">Dual Pricing</th>
-                      <th className="p-4">Pajak & Nopol</th>
-                      <th className="p-4">Inspeksi 150 Titik</th>
-                      <th className="p-4">Status</th>
-                      <th className="p-4 text-right">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/40">
-                    {dbCars.map((car) => (
-                      <tr key={car.id} className="hover:bg-muted/30 transition">
-                        <td className="p-4">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={car.image}
-                              alt={car.name}
-                              className="h-12 w-16 object-cover rounded-xl border border-border"
-                            />
-                            <div>
-                              <p className="font-bold text-sm text-foreground">{car.name}</p>
-                              <p className="text-[11px] text-muted-foreground">
-                                {car.year} • {car.transmission} • {car.mileage.toLocaleString('id-ID')} KM
-                              </p>
-                            </div>
-                          </div>
-                        </td>
+        {/* TAB 5: REPORTS & ANALYTICS */}
+        {activeTab === 'reports' && (
+          <ReportDashboard
+            cars={dbCars}
+            leads={dbLeads}
+            transactions={dbTransactions}
+            expenses={dbExpenses}
+            transactionStats={transactionStats}
+            expenseStats={expenseStats}
+          />
+        )}
 
-                        <td className="p-4">
-                          <p className="font-bold text-primary">
-                            Kredit: {formatIDR(car.priceCredit || Math.round(car.price * 0.95))}
-                          </p>
-                          <p className="text-[11px] text-muted-foreground">
-                            Cash: {formatIDR(car.price)}
-                          </p>
-                        </td>
-
-                        <td className="p-4">
-                          <p className="font-semibold text-foreground">{car.plateNumber || 'Plat B'}</p>
-                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">
-                            Pajak: {car.taxDate || 'Oktober 2026'}
-                          </span>
-                        </td>
-
-                        <td className="p-4">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold px-1.5 py-0.5">
-                              Bebas Banjir
-                            </span>
-                            <span className="rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-bold px-1.5 py-0.5">
-                              Bebas Tabrak
-                            </span>
-                          </div>
-                        </td>
-
-                        <td className="p-4">
-                          <span className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase ${
-                            car.isSoldOut || car.badge === 'SOLD OUT'
-                              ? 'bg-rose-500/10 text-rose-500 border border-rose-500/30'
-                              : car.badge === 'BOOKED'
-                              ? 'bg-amber-500/10 text-amber-500 border border-amber-500/30'
-                              : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/30'
-                          }`}>
-                            {car.isSoldOut ? 'SOLD OUT' : car.badge || 'READY'}
-                          </span>
-                        </td>
-
-                        <td className="p-4 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              onClick={() => handleEditCarClick(car)}
-                              className="rounded-lg p-2 hover:bg-muted text-muted-foreground hover:text-foreground transition"
-                              title="Edit Detail Mobil"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteCarClick(car.id)}
-                              className="rounded-lg p-2 hover:bg-rose-500/10 text-muted-foreground hover:text-rose-500 transition"
-                              title="Hapus Mobil"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        {/* TAB 6: EXPENSE TRACKER */}
+        {activeTab === 'expenses' && (
+          <ExpenseTracker
+            expenses={dbExpenses}
+            cars={dbCars}
+            branches={dbBranches}
+            onCreateExpense={handleCreateExpense}
+            onDeleteExpense={handleDeleteExpense}
+          />
         )}
       </main>
 

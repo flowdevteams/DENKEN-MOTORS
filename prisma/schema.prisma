@@ -73,23 +73,32 @@ model User {
   cars      Car[]    @relation("OwnerCars")
   leads     Lead[]   @relation("OwnerLeads")
   branches  Branch[] @relation("OwnerBranches")
+  expenses  Expense[] @relation("OwnerExpenses")
+  transactions Transaction[] @relation("OwnerTransactions")
 }
 
 model Branch {
-  id        String   @id @default(cuid())
-  slug      String   @unique
-  name      String
-  city      String
-  address   String
-  mapUrl    String?
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  city        String
+  address     String
+  mapUrl      String?
+  phone       String?
+  openDays    String?  // e.g. "Senin - Sabtu"
+  openHours   String?  // e.g. "09:00 - 18:00"
+  description String?
+  isActive    Boolean  @default(true)
   
-  ownerId   String
-  owner     User     @relation("OwnerBranches", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String
+  owner       User     @relation("OwnerBranches", fields: [ownerId], references: [id], onDelete: Cascade)
   
-  cars      Car[]    @relation("BranchCars")
+  cars        Car[]    @relation("BranchCars")
+  expenses    Expense[] @relation("BranchExpenses")
+  transactions Transaction[] @relation("BranchTransactions")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Car {
@@ -135,6 +144,8 @@ model Car {
   branch              Branch?         @relation("BranchCars", fields: [branchId], references: [id], onDelete: SetNull)
   
   leads               Lead[]          @relation("CarLeads")
+  expenses            Expense[]       @relation("CarExpenses")
+  transactions        Transaction[]   @relation("CarTransactions")
 
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
@@ -161,8 +172,82 @@ model Lead {
   ownerId   String?
   owner     User?      @relation("OwnerLeads", fields: [ownerId], references: [id], onDelete: SetNull)
   
+  transactions Transaction[] @relation("LeadTransactions")
+
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+}
+
+// Kategori Pengeluaran Operasional Showroom
+enum ExpenseCategory {
+  Operasional   // Listrik, air, sewa gedung
+  Servis        // Service/perbaikan unit
+  Poles         // Poles, detailing, coating
+  Dokumen       // Biaya balik nama, mutasi, pajak
+  Marketing     // Iklan, promosi, event
+  Gaji          // Gaji sales, admin
+  Lainnya
+}
+
+// Tipe Transaksi Penjualan
+enum TransactionType {
+  Penjualan
+  TradeIn
+}
+
+enum PaymentMethod {
+  Cash
+  Kredit
+  TradeIn
+}
+
+model Expense {
+  id          String          @id @default(cuid())
+  category    ExpenseCategory
+  description String
+  amount      Float
+  date        DateTime        @default(now())
+  
+  carId       String?
+  car         Car?            @relation("CarExpenses", fields: [carId], references: [id], onDelete: SetNull)
+  
+  branchId    String?
+  branch      Branch?         @relation("BranchExpenses", fields: [branchId], references: [id], onDelete: SetNull)
+  
+  ownerId     String
+  owner       User            @relation("OwnerExpenses", fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Transaction {
+  id            String          @id @default(cuid())
+  type          TransactionType @default(Penjualan)
+  
+  carId         String?
+  car           Car?            @relation("CarTransactions", fields: [carId], references: [id], onDelete: SetNull)
+  carName       String          // Snapshot nama mobil saat dijual
+  
+  leadId        String?
+  lead          Lead?           @relation("LeadTransactions", fields: [leadId], references: [id], onDelete: SetNull)
+  
+  buyerName     String
+  buyerPhone    String?
+  salePrice     Float           // Harga jual final
+  paymentMethod PaymentMethod   @default(Cash)
+  
+  branchId      String?
+  branch        Branch?         @relation("BranchTransactions", fields: [branchId], references: [id], onDelete: SetNull)
+  
+  ownerId       String
+  owner         User            @relation("OwnerTransactions", fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  soldAt        DateTime        @default(now())
+  notes         String?
+  
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
 
 model Testimonial {

@@ -14,12 +14,16 @@ import {
   Info,
   ChevronDown,
   ChevronUp,
-  MessageSquare
+  MessageSquare,
+  CheckCircle2,
+  Building2,
+  Shield,
+  FileCheck
 } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useStore, getActiveShowroom } from '@/store/useStore'
 
-const formatIDR = (n: number) => `Rp ${Math.round(n).toLocaleString('id-ID')}`
+const formatIDR = (n: number) => `Rp\u00A0${Math.round(n).toLocaleString('id-ID')}`
 
 const formatDots = (n?: number | string | null) => {
   if (n === undefined || n === null || n === '') return ''
@@ -145,31 +149,87 @@ function SimulationContent() {
 
   return (
     <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
-      {/* Theme Responsive Header */}
-      <div className="bg-card border-b border-border/60 py-20 text-foreground relative overflow-hidden mb-12 shadow-sm">
+      {/* 1. HERO SECTION */}
+      <section className="bg-card border-b border-border/60 py-8 sm:py-24 text-foreground relative overflow-hidden mb-6 sm:mb-12 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
-        <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-primary/10 blur-[120px]" />
-        
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2 mb-6 backdrop-blur-md">
-            <Sparkles className="h-4 w-4 text-primary animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+        <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-black/5 dark:bg-black/40 rounded-full blur-[140px] pointer-events-none" />
+
+        <div className="relative mx-auto w-full max-w-[1536px] px-4 sm:px-10 lg:px-16 text-center">
+          <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
+            <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.28em] text-primary">
               Executive Financial Suite
             </span>
           </div>
-          <h1 className="font-display text-4xl sm:text-6xl font-black tracking-tight">
-            Simulasi Pembiayaan Mobil Mewah
-          </h1>
-          <p className="mt-4 text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg font-medium leading-relaxed">
-            Hitung perkiraan skema kredit secara akurat dengan suku bunga khusus mitra leasing premier DENKEN MOTORS.
-          </p>
-        </div>
-      </div>
 
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        
+          <h1 className="font-display text-xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] sm:leading-[1.05] text-foreground max-w-4xl mx-auto">
+            Skema Pembiayaan <br className="hidden sm:block" />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary to-foreground/80">
+              TERKURASI & FLEKSIBEL,
+            </span>{' '}
+            <span className="font-serif italic font-normal text-muted-foreground sm:block">
+              khusus portofolio Anda.
+            </span>
+          </h1>
+
+          <p className="mt-2 sm:mt-4 text-muted-foreground max-w-2xl mx-auto text-[11px] sm:text-lg leading-relaxed font-normal">
+            Hitung estimasi skema kredit secara akurat dengan suku bunga khusus mitra leasing premier perbankan terkemuka DENKEN MOTORS mulai dari tenor 1 hingga 5 tahun.
+          </p>
+
+          <div className="pt-2 sm:pt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-6 text-[9px] sm:text-xs text-muted-foreground font-semibold">
+            <span className="flex items-center gap-1 sm:gap-2">
+              <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" /> Suku Bunga Spesial Mulai 2.6% p.a.
+            </span>
+            <span className="flex items-center gap-1 sm:gap-2">
+              <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" /> Kemitraan 7+ Lembaga Finansial
+            </span>
+            <span className="flex items-center gap-1 sm:gap-2">
+              <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" /> Persetujuan Cepat & Administrasi Dibantu
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* OUTER WORKSPACE WRAPPER (Standardized with Navbar max-w-[1536px] px-6 sm:px-10 lg:px-16) */}
+      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16 space-y-5 sm:space-y-12">
+        {/* Contextual Visual Card Above Car Selector */}
+        <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/70 bg-card overflow-hidden shadow-lg grid grid-cols-12 items-center">
+          <div className="col-span-7 p-3 sm:p-10 space-y-1.5 sm:space-y-3">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.25em] text-primary">
+              <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              <span>Fasilitas Kredit Eksekutif</span>
+            </div>
+            <h3 className="font-display text-xs sm:text-2xl font-black text-foreground leading-snug">
+              Solusi Finansial Fleksibel dengan Pendampingan Konsultan Privat
+            </h3>
+            <p className="text-[9px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+              Kami mengerti fleksibilitas arus kas Anda adalah prioritas. Tim konsultan pembiayaan DENKEN siap memformulasikan opsi kombinasi DP rendah, angsuran berjenjang (step-up), maupun paket bunga tetap (fixed rate) hingga pelunasan unit.
+            </p>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 pt-1 text-[9px] sm:text-[11px] font-bold text-foreground">
+              <span className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Kerahasiaan Data 100%
+              </span>
+              <span className="flex items-center gap-1 sm:gap-1.5">
+                <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Bebas Biaya Appraisal
+              </span>
+            </div>
+          </div>
+          <div className="col-span-5 h-32 sm:h-56 md:h-full relative overflow-hidden">
+            <img 
+              src="/services/kredit-leasing.jpg" 
+              alt="DENKEN Executive Financial Suite" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-card via-transparent to-transparent" />
+            <span className="absolute bottom-2 left-2 sm:bottom-4 sm:left-5 text-[7px] sm:text-[10px] font-black uppercase tracking-wider text-white bg-black/60 backdrop-blur-md px-2 py-0.5 sm:px-3 sm:py-1 rounded-full border border-white/20">
+              Mitra Terakreditasi OJK
+            </span>
+          </div>
+        </div>
+
         {/* CAR SELECTION STRIP */}
-        <div className="mb-10 rounded-3xl border border-border/60 bg-card p-6 shadow-xl">
+        <div className="rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-3 sm:p-8 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border/50">
             <div>
               <h2 className="font-display text-xl font-bold flex items-center gap-2">
@@ -184,14 +244,14 @@ function SimulationContent() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
             {mounted && displayCars.map((c) => {
               const isSelected = c.id === selectedCarId
               return (
                 <button
                   key={c.id}
                   onClick={() => handleCarSelect(c.id)}
-                  className={`group relative overflow-hidden rounded-2xl border p-2 text-left transition-all ${
+                  className={`group relative overflow-hidden rounded-2xl border p-2.5 text-left transition-all ${
                     isSelected
                       ? 'border-primary bg-primary/10 ring-2 ring-primary/50 shadow-md scale-[1.02]'
                       : 'border-border/60 bg-muted/40 hover:border-primary/40 hover:bg-muted'
@@ -209,11 +269,11 @@ function SimulationContent() {
           </div>
         </div>
 
-        {/* MAIN CALCULATOR GRID */}
-        <div className="grid lg:grid-cols-[1.3fr_1fr] gap-8 items-start">
+        {/* MAIN CALCULATOR GRID: Standard 8 cols (inputs) + 4 cols (summary card) */}
+        <div className="grid grid-cols-12 gap-2.5 sm:gap-8 items-start">
           
-          {/* LEFT: INPUT CONTROLS */}
-          <div className="space-y-8 rounded-3xl border border-border/60 bg-card p-6 sm:p-10 shadow-xl">
+          {/* LEFT: INPUT CONTROLS (8 COLS) */}
+          <div className="col-span-7 sm:col-span-8 space-y-4 sm:space-y-8 rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-3 sm:p-10 shadow-xl">
             
             {/* Selected Car Highlight */}
             {selectedCar && (
@@ -387,33 +447,40 @@ function SimulationContent() {
           </div>
 
           {/* RIGHT: LUXURIOUS SUMMARY CARD */}
-          <div className="sticky top-28 space-y-6">
-            <div className="rounded-3xl bg-zinc-950 text-white p-8 border border-white/15 shadow-2xl relative overflow-hidden">
+          <div className="col-span-5 sm:col-span-4 sticky top-28 space-y-3 sm:space-y-6">
+            <div className="rounded-2xl sm:rounded-3xl bg-zinc-950 text-white p-3 sm:p-7 border border-white/15 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 -mr-20 -mt-20 h-64 w-64 rounded-full bg-primary/30 blur-[100px]" />
               
               <div className="relative z-10">
-                <div className="flex items-center justify-between border-b border-white/15 pb-4 mb-6">
-                  <h3 className="font-display text-xl font-black tracking-wide text-white">Ringkasan Pembiayaan</h3>
-                  <span className="rounded-full bg-primary/30 text-white border border-primary/50 px-3 py-1 text-[10px] font-bold tracking-wider shadow-sm">
-                    ESTIMASI RESMI
-                  </span>
+                <div className="flex items-center justify-between border-b border-white/15 pb-4 mb-5">
+                  <h3 className="font-display text-[10px] sm:text-xl font-black tracking-wide text-white">Ringkasan Pembiayaan</h3>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/90">
+                      Estimasi Resmi
+                    </span>
+                  </div>
                 </div>
 
                 {/* Main Monthly Output */}
-                <div className="mb-8 p-6 rounded-2xl bg-gradient-to-b from-primary/25 to-primary/10 border border-primary/35 text-center relative backdrop-blur-md shadow-inner">
-                  <p className="text-xs font-bold uppercase tracking-widest text-white/70 mb-2">
+                <div className="mb-3 sm:mb-6 p-2.5 sm:p-6 rounded-xl sm:rounded-2xl bg-gradient-to-b from-primary/25 to-primary/10 border border-primary/35 text-center relative backdrop-blur-md shadow-inner overflow-hidden">
+                  <p className="text-[8px] sm:text-[11px] font-bold uppercase tracking-widest text-white/70 mb-1 sm:mb-2">
                     Angsuran Per Bulan
                   </p>
-                  <p className="font-display text-4xl sm:text-5xl font-black text-white tracking-tight">
-                    {formatIDR(monthlyPayment)}
-                  </p>
-                  <p className="text-xs text-white/60 mt-2 font-medium">
+                  <div className="flex items-baseline justify-center gap-1 sm:gap-1.5 whitespace-nowrap">
+                    <span className="font-display text-[10px] sm:text-lg font-bold text-white/80 shrink-0">Rp</span>
+                    <span className="font-display text-sm sm:text-3xl xl:text-[2.25rem] font-black text-white tracking-tight tabular-nums">
+                      {Math.round(monthlyPayment).toLocaleString('id-ID')}
+                    </span>
+                    <span className="text-[8px] sm:text-xs font-semibold text-white/60 shrink-0">/bln</span>
+                  </div>
+                  <p className="text-[8px] sm:text-xs text-white/60 mt-1 sm:mt-2 font-medium">
                     Tenor {tenor} Tahun ({tenor * 12}x Cicilan)
                   </p>
                 </div>
 
                 {/* Detailed Breakdown */}
-                <div className="space-y-3.5 text-xs font-medium text-white/85 border-b border-white/15 pb-6 mb-6">
+                <div className="space-y-2 sm:space-y-3.5 text-[9px] sm:text-xs font-medium text-white/85 border-b border-white/15 pb-3 sm:pb-6 mb-3 sm:mb-6">
                   <div className="flex justify-between">
                     <span className="text-white/70">Harga Kendaraan (OTR)</span>
                     <span className="font-bold text-white">{formatIDR(price)}</span>
@@ -487,7 +554,7 @@ function SimulationContent() {
             </div>
 
             {/* Leasing Partner Trust Bar */}
-            <div className="rounded-2xl border border-border/50 bg-card p-5 text-center shadow-sm">
+            <div className="rounded-xl sm:rounded-2xl border border-border/50 bg-card p-3 sm:p-5 text-center shadow-sm">
               <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
                 Mitra Resmi Pembiayaan Showroom
               </p>
@@ -507,7 +574,7 @@ function SimulationContent() {
         </div>
 
         {/* AMORTIZATION SCHEDULE BREAKDOWN TABLE */}
-        <div className="mt-12 rounded-3xl border border-border/60 bg-card p-6 sm:p-10 shadow-xl">
+        <div className="rounded-2xl sm:rounded-3xl border border-border/60 bg-card p-3 sm:p-10 shadow-xl">
           <button
             onClick={() => setShowAmortization(!showAmortization)}
             className="flex w-full items-center justify-between text-left font-display text-xl font-bold"
@@ -546,6 +613,123 @@ function SimulationContent() {
               </table>
             </div>
           )}
+        </div>
+
+        {/* 2. PREMIER FINANCING PARTNERS SHOWCASE */}
+        <div className="space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2.5">
+              <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+                Premier Financing Partners
+              </span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tight text-foreground">
+              Mitra Lembaga Pembiayaan <span className="font-serif italic font-normal text-muted-foreground">Resmi & Terpercaya.</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Kemitraan strategis dengan institusi perbankan nasional untuk memastikan proses kredit yang transparan, aman, dan efisien.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
+            <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/60 bg-card p-4 sm:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+                <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">BCA Finance</h3>
+                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                  Paket suku bunga terendah mulai 2.6% p.a. fixed untuk unit baru maupun second luxury dengan tenor hingga 5 tahun.
+                </p>
+              </div>
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border/40 text-[9px] sm:text-[11px] font-bold text-primary">
+                Suku Bunga Khusus Prioritas
+              </div>
+            </div>
+
+            <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/60 bg-card p-4 sm:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+                <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">Mandiri Utama (MUF)</h3>
+                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                  Fasilitas uang muka (DP) fleksibel mulai 20% dan proses persetujuan verifikasi dokumen kilat 1x24 jam kerja.
+                </p>
+              </div>
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border/40 text-[9px] sm:text-[11px] font-bold text-primary">
+                Approval Kilat 24 Jam
+              </div>
+            </div>
+
+            <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/60 bg-card p-4 sm:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+                <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">Maybank Finance</h3>
+                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                  Plafon pembiayaan tinggi khusus kendaraan supercar & premium SUV dengan skema angsuran ADDM atau ADDB.
+                </p>
+              </div>
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border/40 text-[9px] sm:text-[11px] font-bold text-primary">
+                Plafon Supercar Eksklusif
+              </div>
+            </div>
+
+            <div className="rounded-2xl sm:rounded-[2.2rem] border border-border/60 bg-card p-4 sm:p-7 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-lg transition-all group">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+                <h3 className="font-display text-xs sm:text-lg font-bold text-foreground line-clamp-1 sm:line-clamp-none">CIMB Niaga Auto</h3>
+                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                  Opsi akad Syariah murni (Murabahah) maupun Konvensional dilengkapi asuransi all-risk komprehensif.
+                </p>
+              </div>
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border/40 text-[9px] sm:text-[11px] font-bold text-primary">
+                Opsi Akad Syariah & All-Risk
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. LUXURY EXECUTIVE HANDOVER BANNER */}
+        <div className="rounded-2xl sm:rounded-[2.5rem] bg-gradient-to-br from-card via-card to-primary/5 border border-border/70 p-3 sm:p-12 shadow-xl grid grid-cols-12 gap-2.5 sm:gap-8 items-center">
+          <div className="col-span-7 space-y-2 sm:space-y-4">
+            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Executive Handover</span>
+            </div>
+            <h3 className="font-display text-xs sm:text-3xl font-black text-foreground">
+              Kredit Disetujui, Kendaraan Impian Siap Dikirim ke Garasi Anda
+            </h3>
+            <p className="text-[9px] sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+              Seluruh pengurusan berkas leasing, polis asuransi all-risk, hingga penerbitan plat nomor dan STNK dipandu langsung oleh tim konsultan showroom tanpa repot.
+            </p>
+            <div className="flex flex-wrap items-center gap-6 pt-2 text-xs font-bold text-foreground">
+              <span className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Pengantaran Towing Tertutup VIP
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Garansi Mesin 1 Tahun Resmi
+              </span>
+            </div>
+          </div>
+          <div className="col-span-5">
+            <div className="rounded-2xl overflow-hidden aspect-[16/10] border border-border/70 shadow-lg relative group">
+              <img 
+                src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1000&q=80" 
+                alt="Executive Handover" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <span className="absolute bottom-3 left-4 text-[10px] font-black uppercase tracking-wider text-white">
+                Serah Terima Unit Showroom DENKEN
+              </span>
+            </div>
+          </div>
         </div>
 
       </div>

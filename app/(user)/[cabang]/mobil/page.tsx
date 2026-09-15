@@ -152,22 +152,25 @@ function FilterContent() {
   return (
     <div className="pt-24 pb-20 min-h-screen bg-secondary/30">
       {/* Theme Responsive Header */}
-      <div className="bg-card border-b border-border/60 py-16 text-foreground relative overflow-hidden mb-10 shadow-sm">
+      <div className="bg-card border-b border-border/60 py-8 sm:py-16 text-foreground relative overflow-hidden mb-5 sm:mb-10 shadow-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
-        <div className="relative mx-auto w-full max-w-[1536px] px-6 sm:px-10 lg:px-16 text-center">
-          <span className="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-black uppercase tracking-widest mb-3 inline-block">
-            DENKEN MOTORS SELECTION
-          </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight">
+        <div className="relative mx-auto w-full max-w-[1536px] px-4 sm:px-10 lg:px-16 text-center">
+          <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
+            <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.28em] text-primary">
+              DENKEN Motors Selection
+            </span>
+          </div>
+          <h1 className="font-display text-xl sm:text-5xl font-black tracking-tight">
             Katalog Mobil Premium
           </h1>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+          <p className="mt-1.5 sm:mt-3 text-muted-foreground max-w-2xl mx-auto text-[10px] sm:text-base leading-relaxed">
             Temukan unit mobil impian bersertifikasi 150 titik inspeksi dengan skema paket kredit terjangkau & harga cash transparan.
           </p>
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-[1536px] px-6 sm:px-10 lg:px-16">
+      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16">
         {/* Active Showroom Banner */}
         {mounted && currentAdminUser && (
           <div className="mb-8 rounded-3xl bg-gradient-to-r from-amber-500/20 via-amber-500/10 to-primary/10 border border-amber-500/40 p-4 shadow-md flex items-center justify-center gap-3">
@@ -178,13 +181,13 @@ function FilterContent() {
           </div>
         )}
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex gap-2.5 sm:gap-8">
           {/* Mobile Filter Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="lg:hidden flex items-center justify-center gap-2 rounded-2xl bg-card border border-border p-4 font-bold shadow-sm"
+            className="lg:hidden flex items-center justify-center gap-1.5 rounded-xl bg-card border border-border p-2.5 font-bold shadow-sm text-[10px] sm:text-xs w-fit shrink-0"
           >
-            <SlidersHorizontal className="h-5 w-5 text-primary" /> Filter Pencarian Pasar ({filteredCars.length})
+            <SlidersHorizontal className="h-4 w-4 text-primary" /> Filter
           </button>
 
           {/* Sidebar Filters */}
@@ -365,7 +368,7 @@ function FilterContent() {
                 <p className="text-muted-foreground animate-pulse text-sm font-bold">Memuat katalog mobil...</p>
               </div>
             ) : filteredCars.length > 0 ? (
-              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-2 xl:grid-cols-3 gap-2.5 sm:gap-6">
                 {filteredCars.map((car, i) => (
                   <CarCard key={car.id} car={car} index={i} />
                 ))}

@@ -117,10 +117,11 @@ function CreditFormContent() {
 
   return (
     <div className="pt-24 pb-24 min-h-screen bg-secondary/30">
-      <div className="mx-auto max-w-3xl px-5 lg:px-8">
-        <div className="mb-12 text-center">
-          <h1 className="font-display text-4xl font-black tracking-tight mb-4">Formulir Pengajuan Kredit</h1>
-          <p className="text-muted-foreground">
+      <div className="mx-auto w-full max-w-[1536px] px-3 sm:px-10 lg:px-16">
+        <div className="max-w-3xl mx-auto">
+          <div className="mb-6 sm:mb-12 text-center">
+            <h1 className="font-display text-xl sm:text-4xl font-black tracking-tight mb-2 sm:mb-4">Formulir Pengajuan Kredit</h1>
+          <p className="text-[11px] sm:text-base text-muted-foreground">
             Lengkapi data di bawah ini untuk memulai proses simulasi & pengajuan kredit mobil Anda.
           </p>
         </div>
@@ -154,7 +155,7 @@ function CreditFormContent() {
                   handleNext()
                 }
           }
-          className="rounded-3xl border border-border/50 bg-card p-6 sm:p-10 shadow-2xl"
+          className="rounded-2xl sm:rounded-3xl border border-border/50 bg-card p-3 sm:p-10 shadow-2xl"
         >
           {step === 1 && (
             <div className="space-y-6">
@@ -181,7 +182,7 @@ function CreditFormContent() {
                   placeholder="0812xxxx"
                 />
               </div>
-              <div className="grid sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-6">
                 <div>
                   <label className="text-sm font-bold mb-2 block">Email</label>
                   <input
@@ -355,6 +356,7 @@ function CreditFormContent() {
         </form>
       </div>
     </div>
+  </div>
   )
 }
 
